@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Providence Parcel: Strategic Financial Roadmap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 384px;
+            }
+        }
+        .kpi-value {
+            font-weight: 900;
+            color: #00488d;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            color: #66a3e0;
+            line-height: 1;
+        }
+        .icon-symbol {
+            font-size: 3rem;
+            line-height: 1;
+            color: #0066cc;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: #00488d;
+            border-radius: 50%;
+            border: 2px solid #99c2e9;
+        }
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 0.7rem;
+            top: 2rem;
+            height: calc(100% - 2rem);
+            width: 2px;
+            background-color: #00488d;
+        }
+    </style>
+</head>
+<body class="text-gray-700">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-black text-gray-800">Providence Parcel: Strategic Roadmap</h1>
+            <p class="text-xl md:text-2xl text-[#00488d] font-semibold mt-2">A Detailed Financial Analysis and Implementation Plan</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <section id="financial-analysis" class="lg:col-span-3 card">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Financial Analysis Deep Dive: Why Ownership is the Best Path</h2>
+                <p class="mb-6">The analysis confirms that **Scenario 1**, direct acquisition and self-development, offers the most significant long-term financial benefits for L&W Supply. This approach is a classic **value-add development play** that maximizes control and asset appreciation, providing a solid, predictable return profile.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="card p-4">
+                        <h3 class="text-xl font-bold text-[#0066cc] mb-2">Compelling Returns</h3>
+                        <p class="text-sm text-gray-600">A **12% Internal Rate of Return (IRR)** and a **2.0x equity multiple** signify a doubling of equity over a 10-year horizon. This is achieved by combining a strong yield on cost with expected capital appreciation.</p>
+                    </div>
+                    <div class="card p-4">
+                        <h3 class="text-xl font-bold text-[#0066cc] mb-2">Risk Management</h3>
+                        <p class="text-sm text-gray-600">Financial risk is tied to **cost escalation**. The model shows that a 10% overrun still yields a respectable **10.8% IRR**, highlighting the project's resilience. Mitigating this with a **guaranteed maximum price (GMP) contract** is a key part of the strategy.</p>
+                    </div>
+                    <div class="card p-4">
+                        <h3 class="text-xl font-bold text-[#0066cc] mb-2">Strategic Control</h3>
+                        <p class="text-sm text-gray-600">Unlike a ground lease, ownership provides full control over a mission-critical asset, allowing L&W Supply to tailor the facility to its exact operational needs and capture all the long-term value created in a supply-constrained market.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-center mb-2">IRR Sensitivity to Market Variables</h3>
+                    <div class="chart-container">
+                        <canvas id="irrSensitivityChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm mt-2 text-gray-600">The project's IRR is highly responsive to favorable rent growth and exit cap rate compression, while demonstrating measured resilience against construction cost escalation.</p>
+                </div>
+            </section>
+
+            <section id="roadmap" class="lg:col-span-3 card">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Strategic Roadmap: L&W Supply Direct Acquisition</h2>
+                <p class="mb-6">This phased plan outlines the specific actions and timelines for L&W Supply to execute the direct acquisition and immediate development, ensuring a seamless transition and maximum value capture.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <div class="timeline-item">
+                            <h3 class="font-bold text-[#0066cc]">Phase 1: Immediate Action (0-3 Months)</h3>
+                            <ul class="list-disc list-inside mt-2 text-sm text-gray-600">
+                                <li>Secure the land with a Purchase and Sale Agreement.</li>
+                                <li>Engage project team (Architect, Engineer, General Contractor, Environmental Consultant).</li>
+                                <li>Initiate talks with lenders to lock in **6% fixed-rate financing** at a **70% loan-to-cost**.</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-item mt-8">
+                            <h3 class="font-bold text-[#0066cc]">Phase 2: Entitlement & Permitting (3-9 Months)</h3>
+                             <ul class="list-disc list-inside mt-2 text-sm text-gray-600">
+                                <li>Submit final plans for zoning and site plan review.</li>
+                                <li>Obtain all necessary building permits.</li>
+                                <li>Proactively engage with local officials to streamline the process.</li>
+                                <li>Coordinate with utility providers for tie-ins.</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-item mt-8">
+                            <h3 class="font-bold text-[#0066cc]">Phase 3: Construction & Occupancy (9-20 Months)</h3>
+                            <ul class="list-disc list-inside mt-2 text-sm text-gray-600">
+                                <li>Break ground and begin construction under a GMP contract.</li>
+                                <li>Implement a project management system for progress tracking.</li>
+                                <li>Complete final inspections for the certificate of occupancy.</li>
+                                <li>Begin interior build-out and occupy the new facility.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                         <h3 class="text-lg font-semibold text-center mb-2">Project Costs Breakdown</h3>
+                         <div class="chart-container h-80 md:h-96">
+                            <canvas id="costBreakdownChart"></canvas>
+                        </div>
+                         <p class="text-center text-sm mt-2 text-gray-600">The majority of the budget is allocated to hard costs, with prudent allowances for soft costs and financing to ensure a smooth development process.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="synthesis" class="lg:col-span-3">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Strategic Synthesis: Unlocking Long-Term Value</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="card text-center">
+                        <div class="icon-symbol">👑</div>
+                        <h3 class="text-xl font-bold my-3 text-gray-800">For Maximum Control</h3>
+                        <p class="text-gray-600">Scenario 1 offers the most robust long-term outcome, full operational control, and captures all asset appreciation despite higher capital demands.</p>
+                    </div>
+                    <div class="card text-center">
+                         <div class="icon-symbol">🛡️</div>
+                        <h3 class="text-xl font-bold my-3 text-gray-800">For Capital Preservation</h3>
+                        <p class="text-gray-600">Scenario 2 provides complete risk insulation and requires zero equity, but perpetuates rental obligations without any wealth creation.</p>
+                    </div>
+                    <div class="card text-center">
+                         <div class="icon-symbol">⚖️</div>
+                        <h3 class="text-xl font-bold my-3 text-gray-800">For Negotiated Optionality</h3>
+                        <p class="text-gray-600">Scenario 3 affords a strategic hedge, granting interim occupancy with an embedded, attractively priced path to future ownership.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        
+        <footer class="text-center mt-12 py-4 border-t border-gray-300">
+            <p class="text-sm text-gray-500">Providence Parcel Financial Framework | Confidential Analysis</p>
+        </footer>
+
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const brilliantBlues = {
+        darkBlue: '#00488d',
+        mediumBlue: '#0066cc',
+        lightBlue: '#3385d6',
+        lighterBlue: '#66a3e0',
+        paleBlue: '#99c2e9',
+        fontColor: '#4b5563'
+    };
+
+    const globalChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    color: brilliantBlues.fontColor,
+                    boxWidth: 15,
+                    padding: 15
+                }
+            },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                titleFont: { size: 14, weight: 'bold' },
+                bodyFont: { size: 12 },
+                padding: 10,
+                cornerRadius: 4,
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                          return label.join(' ');
+                        } else {
+                          return label;
+                        }
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: brilliantBlues.fontColor },
+                grid: { display: false }
+            },
+            y: {
+                ticks: { color: brilliantBlues.fontColor },
+                grid: { color: '#e5e7eb' }
+            }
+        }
+    };
+    
+    function formatLabel(str, maxLen = 16) {
+        if (str.length <= maxLen) return str;
+        const words = str.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).trim().length > maxLen) {
+                lines.push(currentLine.trim());
+                currentLine = word;
+            } else {
+                currentLine = (currentLine + ' ' + word).trim();
+            }
+        });
+        lines.push(currentLine.trim());
+        return lines;
+    }
+
+    const irrCtx = document.getElementById('irrSensitivityChart');
+    if (irrCtx) {
+        new Chart(irrCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Base Case', formatLabel('+$1/SF Rent Lift'), formatLabel('Cap Rate Compression to 5.25%'), formatLabel('10% Cost Escalation')],
+                datasets: [{
+                    label: 'Resulting IRR (%)',
+                    data: [12.0, 13.8, 14.1, 10.8],
+                    backgroundColor: [brilliantBlues.lightBlue, brilliantBlues.mediumBlue, brilliantBlues.darkBlue, brilliantBlues.lighterBlue],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                ...globalChartOptions,
+                plugins: { ...globalChartOptions.plugins, legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 10,
+                        title: { display: true, text: 'IRR (%)', color: brilliantBlues.fontColor }
+                    }
+                }
+            }
+        });
+    }
+
+    const costBreakdownCtx = document.getElementById('costBreakdownChart');
+    if (costBreakdownCtx) {
+        new Chart(costBreakdownCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Land Valuation ($1.225M)', 'Construction Hard Costs ($3.5M)', 'Ancillary Soft Costs ($500K)', 'Contingency ($175K)'],
+                datasets: [{
+                    label: 'Project Costs',
+                    data: [1.225, 3.5, 0.5, 0.175],
+                    backgroundColor: [
+                        brilliantBlues.darkBlue,
+                        brilliantBlues.mediumBlue,
+                        brilliantBlues.lightBlue,
+                        brilliantBlues.lighterBlue
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            },
+            options: { ...globalChartOptions, scales: { x: { display: false }, y: { display: false } } }
+        });
+    }
+
+});
+</script>
+
+</body>
+</html>
