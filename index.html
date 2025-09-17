@@ -92,29 +92,88 @@
 
             <section id="financial-analysis" class="lg:col-span-3 card">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Financial Analysis Deep Dive: Why Ownership is the Best Path</h2>
-                <p class="mb-6">The analysis confirms that **Scenario 1**, direct acquisition and self-development, offers the most significant long-term financial benefits for L&W Supply. This approach is a classic **value-add development play** that maximizes control and asset appreciation, providing a solid, predictable return profile.</p>
+                <p class="mb-6">The analysis confirms that Scenario 1, direct acquisition and self-development, offers the most significant long-term financial benefits for L&W Supply. This approach is a classic value-add development play that maximizes control and asset appreciation, providing a solid, predictable return profile.</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="card p-4">
                         <h3 class="text-xl font-bold text-[#0066cc] mb-2">Compelling Returns</h3>
-                        <p class="text-sm text-gray-600">A **12% Internal Rate of Return (IRR)** and a **2.0x equity multiple** signify a doubling of equity over a 10-year horizon. This is achieved by combining a strong yield on cost with expected capital appreciation.</p>
+                        <p class="text-sm text-gray-600">Projected <strong><span id="baseIrrDisplay">12.0%</span> IRR</strong> and an approximate <strong><span id="equityMultipleDisplay">2.00x</span> equity multiple</strong> over a 10-year horizon underscore the long-term wealth creation opportunity.</p>
                     </div>
                     <div class="card p-4">
                         <h3 class="text-xl font-bold text-[#0066cc] mb-2">Risk Management</h3>
-                        <p class="text-sm text-gray-600">Financial risk is tied to **cost escalation**. The model shows that a 10% overrun still yields a respectable **10.8% IRR**, highlighting the project's resilience. Mitigating this with a **guaranteed maximum price (GMP) contract** is a key part of the strategy.</p>
+                        <p class="text-sm text-gray-600">Even with a <strong><span id="costEscalationDisplay">10.0%</span> cost overrun</strong>, modeled returns compress only to <strong><span id="stressIrrDisplay">10.8%</span> IRR</strong>, highlighting resilience reinforced by a guaranteed maximum price (GMP) strategy.</p>
                     </div>
                     <div class="card p-4">
                         <h3 class="text-xl font-bold text-[#0066cc] mb-2">Strategic Control</h3>
-                        <p class="text-sm text-gray-600">Unlike a ground lease, ownership provides full control over a mission-critical asset, allowing L&W Supply to tailor the facility to its exact operational needs and capture all the long-term value created in a supply-constrained market.</p>
+                        <p class="text-sm text-gray-600">Ownership allows L&amp;W Supply to tailor the facility, capture full appreciation, and capitalize on upside scenarios such as <strong><span id="rentLiftDisplay">+$1.00/SF</span> rent lifts</strong> or <strong><span id="capRateDisplay">5.25%</span> exit cap rates</strong>.</p>
                     </div>
                 </div>
 
-                <div class="mt-8">
-                    <h3 class="text-lg font-semibold text-center mb-2">IRR Sensitivity to Market Variables</h3>
-                    <div class="chart-container">
-                        <canvas id="irrSensitivityChart"></canvas>
+                <div class="mt-8 grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
+                    <div class="card bg-[#f8fbff] border border-[#c9def4]">
+                        <h3 class="text-lg font-semibold text-gray-800">Interactive Sensitivity Lab</h3>
+                        <p class="text-sm text-gray-600 mb-4">Adjust underwriting assumptions to see how Scenario 1 performs across a range of outcomes.</p>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
+                                    <label for="baseIrrInput">Base Case IRR</label>
+                                    <span id="baseIrrOutput" class="text-[#00488d]">12.0%</span>
+                                </div>
+                                <input id="baseIrrInput" type="range" min="8" max="18" step="0.1" value="12" class="mt-2 w-full accent-[#0066cc]">
+                            </div>
+                            <div>
+                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
+                                    <label for="rentLiftInput">Rent Lift (+$/SF)</label>
+                                    <span id="rentLiftOutput" class="text-[#00488d]">+$1.00</span>
+                                </div>
+                                <input id="rentLiftInput" type="range" min="0" max="3" step="0.25" value="1" data-sensitivity="1.8" class="mt-2 w-full accent-[#0066cc]">
+                            </div>
+                            <div>
+                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
+                                    <label for="exitCapInput">Exit Cap Rate</label>
+                                    <span id="exitCapOutput" class="text-[#00488d]">5.25%</span>
+                                </div>
+                                <input id="exitCapInput" type="range" min="4.75" max="7" step="0.05" value="5.25" data-base-cap="5.75" data-sensitivity="4.2" class="mt-2 w-full accent-[#0066cc]">
+                            </div>
+                            <div>
+                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
+                                    <label for="costEscalationInput">Cost Escalation</label>
+                                    <span id="costEscalationOutput" class="text-[#00488d]">10.0%</span>
+                                </div>
+                                <input id="costEscalationInput" type="range" min="-5" max="20" step="0.5" value="10" data-sensitivity="0.12" class="mt-2 w-full accent-[#0066cc]">
+                                <p class="mt-2 text-xs text-gray-500">Negative values indicate cost savings relative to underwriting.</p>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-center text-sm mt-2 text-gray-600">The project's IRR is highly responsive to favorable rent growth and exit cap rate compression, while demonstrating measured resilience against construction cost escalation.</p>
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800 text-center">IRR Sensitivity to Market Variables</h3>
+                        <div class="chart-container">
+                            <canvas id="irrSensitivityChart"></canvas>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="card border border-[#e5effb] bg-[#f9fbff]">
+                                <h4 class="text-sm font-semibold text-gray-700">Base Case Outcome</h4>
+                                <p class="mt-1 text-xl font-black text-[#00488d]" id="baseIrrResult">12.0%</p>
+                                <p class="text-xs text-gray-500">Modeled IRR before upside or stress scenarios.</p>
+                            </div>
+                            <div class="card border border-[#e5effb] bg-[#f9fbff]">
+                                <h4 class="text-sm font-semibold text-gray-700">Upside Potential</h4>
+                                <p class="mt-1 text-xl font-black text-[#0066cc]" id="upsideIrrResult">13.8%</p>
+                                <p class="text-xs text-gray-500">Best lift from rent growth or cap compression.</p>
+                            </div>
+                            <div class="card border border-[#ffe6d4] bg-[#fff7f0]">
+                                <h4 class="text-sm font-semibold text-gray-700">Cost Stress Test</h4>
+                                <p class="mt-1 text-xl font-black text-[#d97706]" id="stressIrrResultCard">10.8%</p>
+                                <p class="text-xs text-gray-500">IRR impact at the modeled escalation level.</p>
+                            </div>
+                            <div class="card border border-[#d9f4e3] bg-[#f3fcf7]">
+                                <h4 class="text-sm font-semibold text-gray-700">Equity Multiple</h4>
+                                <p class="mt-1 text-xl font-black text-[#047857]" id="equityMultipleResult">2.00x</p>
+                                <p class="text-xs text-gray-500">Approximate equity multiple over ten years.</p>
+                            </div>
+                        </div>
+                        <p class="text-center text-sm text-gray-600">The project's IRR is highly responsive to favorable rent growth and exit cap rate compression, while demonstrating measured resilience against construction cost escalation.</p>
+                    </div>
                 </div>
             </section>
 
@@ -122,7 +181,7 @@
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Strategic Roadmap: L&W Supply Direct Acquisition</h2>
                 <p class="mb-6">This phased plan outlines the specific actions and timelines for L&W Supply to execute the direct acquisition and immediate development, ensuring a seamless transition and maximum value capture.</p>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                     <div>
                         <div class="timeline-item">
                             <h3 class="font-bold text-[#0066cc]">Phase 1: Immediate Action (0-3 Months)</h3>
@@ -151,12 +210,65 @@
                             </ul>
                         </div>
                     </div>
-                    <div>
-                         <h3 class="text-lg font-semibold text-center mb-2">Project Costs Breakdown</h3>
-                         <div class="chart-container h-80 md:h-96">
+                    <div class="space-y-6">
+                        <div class="card bg-[#f9fbff] border border-[#d5e5fa]">
+                            <h3 class="text-lg font-semibold text-gray-800">Adjust Project Cost Assumptions</h3>
+                            <p class="text-sm text-gray-600 mb-4">Use sliders or direct entry (in millions) to tailor the development budget to current market intelligence.</p>
+                            <div class="space-y-5">
+                                <div>
+                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
+                                        <label for="landCostValue">Land Valuation</label>
+                                        <span data-label-for="landCostValue" class="text-[#00488d]">$1.23M</span>
+                                    </div>
+                                    <input id="landCostRange" type="range" min="0.8" max="2" step="0.025" value="1.225" data-target="landCostValue" class="mt-2 w-full accent-[#0066cc]">
+                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
+                                        <input id="landCostValue" type="number" min="0.8" max="2" step="0.025" value="1.225" data-target="landCostRange" data-cost-input data-label="Land Valuation" class="w-20 rounded border border-gray-300 px-2 py-1 text-xs">
+                                        <span data-share-for="landCostValue">22.7% of total</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
+                                        <label for="hardCostValue">Construction Hard Costs</label>
+                                        <span data-label-for="hardCostValue" class="text-[#00488d]">$3.50M</span>
+                                    </div>
+                                    <input id="hardCostRange" type="range" min="2.5" max="5" step="0.05" value="3.5" data-target="hardCostValue" class="mt-2 w-full accent-[#0066cc]">
+                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
+                                        <input id="hardCostValue" type="number" min="2.5" max="5" step="0.05" value="3.5" data-target="hardCostRange" data-cost-input data-label="Construction Hard Costs" class="w-24 rounded border border-gray-300 px-2 py-1 text-xs">
+                                        <span data-share-for="hardCostValue">64.8% of total</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
+                                        <label for="softCostValue">Ancillary Soft Costs</label>
+                                        <span data-label-for="softCostValue" class="text-[#00488d]">$0.50M</span>
+                                    </div>
+                                    <input id="softCostRange" type="range" min="0.2" max="1" step="0.025" value="0.5" data-target="softCostValue" class="mt-2 w-full accent-[#0066cc]">
+                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
+                                        <input id="softCostValue" type="number" min="0.2" max="1" step="0.025" value="0.5" data-target="softCostRange" data-cost-input data-label="Ancillary Soft Costs" class="w-24 rounded border border-gray-300 px-2 py-1 text-xs">
+                                        <span data-share-for="softCostValue">9.3% of total</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
+                                        <label for="contingencyValue">Contingency</label>
+                                        <span data-label-for="contingencyValue" class="text-[#00488d]">$0.18M</span>
+                                    </div>
+                                    <input id="contingencyRange" type="range" min="0" max="0.5" step="0.01" value="0.175" data-target="contingencyValue" class="mt-2 w-full accent-[#0066cc]">
+                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
+                                        <input id="contingencyValue" type="number" min="0" max="0.5" step="0.01" value="0.175" data-target="contingencyRange" data-cost-input data-label="Contingency" class="w-20 rounded border border-gray-300 px-2 py-1 text-xs">
+                                        <span data-share-for="contingencyValue">3.2% of total</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-sm font-semibold text-gray-700 border-t border-[#dbe7f9] pt-4 mt-4">
+                                <span>Total Project Budget</span>
+                                <span id="totalProjectBudget" class="text-[#0b5394]">$5.40M</span>
+                            </div>
+                        </div>
+                        <div class="chart-container h-80 md:h-96">
                             <canvas id="costBreakdownChart"></canvas>
                         </div>
-                         <p class="text-center text-sm mt-2 text-gray-600">The majority of the budget is allocated to hard costs, with prudent allowances for soft costs and financing to ensure a smooth development process.</p>
+                        <p class="text-center text-sm text-gray-600">The majority of the budget is allocated to <strong><span id="dominantCostCategory">Construction Hard Costs</span></strong>, currently representing <strong><span id="dominantCostShare">64.8%</span></strong> of projected spend.</p>
                     </div>
                 </div>
             </section>
@@ -192,7 +304,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-
     const brilliantBlues = {
         darkBlue: '#00488d',
         mediumBlue: '#0066cc',
@@ -220,14 +331,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 padding: 10,
                 cornerRadius: 4,
                 callbacks: {
-                    title: function(tooltipItems) {
+                    title: function (tooltipItems) {
                         const item = tooltipItems[0];
-                        let label = item.chart.data.labels[item.dataIndex];
-                        if (Array.isArray(label)) {
-                          return label.join(' ');
-                        } else {
-                          return label;
-                        }
+                        const label = item.chart.data.labels[item.dataIndex];
+                        return Array.isArray(label) ? label.join(' ') : label;
                     }
                 }
             }
@@ -243,13 +350,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
-    
-    function formatLabel(str, maxLen = 16) {
+
+    const formatLabel = (str, maxLen = 16) => {
         if (str.length <= maxLen) return str;
         const words = str.split(' ');
         const lines = [];
         let currentLine = '';
-        words.forEach(word => {
+        words.forEach((word) => {
             if ((currentLine + ' ' + word).trim().length > maxLen) {
                 lines.push(currentLine.trim());
                 currentLine = word;
@@ -259,18 +366,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         lines.push(currentLine.trim());
         return lines;
-    }
+    };
+
+    const roundTo = (value, decimals = 1) => {
+        const factor = 10 ** decimals;
+        return Math.round(value * factor) / factor;
+    };
+
+    const formatPercent = (value, decimals = 1) => `${roundTo(value, decimals).toFixed(decimals)}%`;
+    const formatSignedPercent = (value, decimals = 1) => `${value >= 0 ? '' : '-'}${roundTo(Math.abs(value), decimals).toFixed(decimals)}%`;
+    const formatRentLift = (value) => `${value >= 0 ? '+' : '-'}$${Math.abs(value).toFixed(2)}/SF`;
+    const formatCapRate = (value) => `${Number(value).toFixed(2)}%`;
+    const formatDollarMillions = (value, decimals = 2) => {
+        const safeValue = Number.isFinite(value) ? value : 0;
+        return `$${roundTo(safeValue, decimals).toFixed(decimals)}M`;
+    };
+    const formatEquityMultiple = (value) => `${roundTo(value, 2).toFixed(2)}x`;
+
+    const baseIrrInput = document.getElementById('baseIrrInput');
+    const rentLiftInput = document.getElementById('rentLiftInput');
+    const exitCapInput = document.getElementById('exitCapInput');
+    const costEscalationInput = document.getElementById('costEscalationInput');
 
     const irrCtx = document.getElementById('irrSensitivityChart');
+    let irrChart;
     if (irrCtx) {
-        new Chart(irrCtx, {
+        irrChart = new Chart(irrCtx, {
             type: 'bar',
             data: {
-                labels: ['Base Case', formatLabel('+$1/SF Rent Lift'), formatLabel('Cap Rate Compression to 5.25%'), formatLabel('10% Cost Escalation')],
+                labels: [],
                 datasets: [{
                     label: 'Resulting IRR (%)',
-                    data: [12.0, 13.8, 14.1, 10.8],
-                    backgroundColor: [brilliantBlues.lightBlue, brilliantBlues.mediumBlue, brilliantBlues.darkBlue, brilliantBlues.lighterBlue],
+                    data: [],
+                    backgroundColor: [
+                        brilliantBlues.lightBlue,
+                        brilliantBlues.mediumBlue,
+                        brilliantBlues.darkBlue,
+                        brilliantBlues.lighterBlue
+                    ],
                     borderRadius: 4
                 }]
             },
@@ -280,7 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 scales: {
                     y: {
                         beginAtZero: false,
-                        min: 10,
+                        min: 6,
                         title: { display: true, text: 'IRR (%)', color: brilliantBlues.fontColor }
                     }
                 }
@@ -288,15 +421,90 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const irrOutputs = {
+        baseIrrOutput: document.getElementById('baseIrrOutput'),
+        rentLiftOutput: document.getElementById('rentLiftOutput'),
+        exitCapOutput: document.getElementById('exitCapOutput'),
+        costEscalationOutput: document.getElementById('costEscalationOutput'),
+        baseIrrDisplay: document.getElementById('baseIrrDisplay'),
+        equityMultipleDisplay: document.getElementById('equityMultipleDisplay'),
+        costEscalationDisplay: document.getElementById('costEscalationDisplay'),
+        stressIrrDisplay: document.getElementById('stressIrrDisplay'),
+        rentLiftDisplay: document.getElementById('rentLiftDisplay'),
+        capRateDisplay: document.getElementById('capRateDisplay'),
+        baseIrrResult: document.getElementById('baseIrrResult'),
+        upsideIrrResult: document.getElementById('upsideIrrResult'),
+        stressIrrResultCard: document.getElementById('stressIrrResultCard'),
+        equityMultipleResult: document.getElementById('equityMultipleResult')
+    };
+
+    const updateIrrOutputs = () => {
+        if (!irrChart || !baseIrrInput || !rentLiftInput || !exitCapInput || !costEscalationInput) {
+            return;
+        }
+
+        const baseIrr = Number(baseIrrInput.value);
+        const rentLift = Number(rentLiftInput.value);
+        const rentSensitivity = Number(rentLiftInput.dataset.sensitivity || 1.8);
+        const exitCap = Number(exitCapInput.value);
+        const capBase = Number(exitCapInput.dataset.baseCap || 5.75);
+        const capSensitivity = Number(exitCapInput.dataset.sensitivity || 4.2);
+        const costEscalation = Number(costEscalationInput.value);
+        const costSensitivity = Number(costEscalationInput.dataset.sensitivity || 0.12);
+
+        const rentIrr = baseIrr + rentLift * rentSensitivity;
+        const capIrr = baseIrr + (capBase - exitCap) * capSensitivity;
+        const stressIrr = baseIrr - costEscalation * costSensitivity;
+        const upsideIrr = Math.max(rentIrr, capIrr);
+        const equityMultiple = 1 + baseIrr / 12;
+
+        irrChart.data.datasets[0].data = [
+            roundTo(baseIrr, 2),
+            roundTo(rentIrr, 2),
+            roundTo(capIrr, 2),
+            roundTo(stressIrr, 2)
+        ];
+        irrChart.data.labels = [
+            'Base Case',
+            formatLabel(`Rent Lift Impact (${formatRentLift(rentLift)})`),
+            formatLabel(`Exit Cap @ ${formatCapRate(exitCap)}`),
+            formatLabel(`${costEscalation >= 0 ? formatPercent(costEscalation, 1) + ' Cost Overrun' : formatSignedPercent(costEscalation, 1) + ' Cost Savings'}`)
+        ];
+        irrChart.update();
+
+        if (irrOutputs.baseIrrOutput) irrOutputs.baseIrrOutput.textContent = formatPercent(baseIrr, 1);
+        if (irrOutputs.rentLiftOutput) irrOutputs.rentLiftOutput.textContent = formatRentLift(rentLift).replace('/SF', '');
+        if (irrOutputs.exitCapOutput) irrOutputs.exitCapOutput.textContent = formatCapRate(exitCap);
+        if (irrOutputs.costEscalationOutput) irrOutputs.costEscalationOutput.textContent = formatSignedPercent(costEscalation, 1);
+
+        if (irrOutputs.baseIrrDisplay) irrOutputs.baseIrrDisplay.textContent = formatPercent(baseIrr, 1);
+        if (irrOutputs.equityMultipleDisplay) irrOutputs.equityMultipleDisplay.textContent = formatEquityMultiple(equityMultiple);
+        if (irrOutputs.costEscalationDisplay) irrOutputs.costEscalationDisplay.textContent = formatSignedPercent(costEscalation, 1);
+        if (irrOutputs.stressIrrDisplay) irrOutputs.stressIrrDisplay.textContent = formatPercent(stressIrr, 1);
+        if (irrOutputs.rentLiftDisplay) irrOutputs.rentLiftDisplay.textContent = formatRentLift(rentLift);
+        if (irrOutputs.capRateDisplay) irrOutputs.capRateDisplay.textContent = formatCapRate(exitCap);
+        if (irrOutputs.baseIrrResult) irrOutputs.baseIrrResult.textContent = formatPercent(baseIrr, 1);
+        if (irrOutputs.upsideIrrResult) irrOutputs.upsideIrrResult.textContent = formatPercent(upsideIrr, 1);
+        if (irrOutputs.stressIrrResultCard) irrOutputs.stressIrrResultCard.textContent = formatPercent(stressIrr, 1);
+        if (irrOutputs.equityMultipleResult) irrOutputs.equityMultipleResult.textContent = formatEquityMultiple(equityMultiple);
+    };
+
+    [baseIrrInput, rentLiftInput, exitCapInput, costEscalationInput].forEach((input) => {
+        if (input) {
+            input.addEventListener('input', updateIrrOutputs);
+        }
+    });
+
     const costBreakdownCtx = document.getElementById('costBreakdownChart');
+    let costBreakdownChart;
     if (costBreakdownCtx) {
-        new Chart(costBreakdownCtx, {
+        costBreakdownChart = new Chart(costBreakdownCtx, {
             type: 'pie',
             data: {
-                labels: ['Land Valuation ($1.225M)', 'Construction Hard Costs ($3.5M)', 'Ancillary Soft Costs ($500K)', 'Contingency ($175K)'],
+                labels: [],
                 datasets: [{
                     label: 'Project Costs',
-                    data: [1.225, 3.5, 0.5, 0.175],
+                    data: [],
                     backgroundColor: [
                         brilliantBlues.darkBlue,
                         brilliantBlues.mediumBlue,
@@ -311,6 +519,81 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const costNumberInputs = Array.from(document.querySelectorAll('input[data-cost-input]'));
+    const costRangeInputs = Array.from(document.querySelectorAll('input[type="range"][data-target]'));
+    const totalBudgetDisplay = document.getElementById('totalProjectBudget');
+    const dominantCategoryDisplay = document.getElementById('dominantCostCategory');
+    const dominantCostShareDisplay = document.getElementById('dominantCostShare');
+
+    const updateCostBreakdown = () => {
+        if (!costBreakdownChart || costNumberInputs.length === 0) {
+            return;
+        }
+
+        const values = costNumberInputs.map((input) => Number(input.value));
+        const labels = costNumberInputs.map((input) => input.dataset.label || '');
+        const formattedLabels = labels.map((label, idx) => `${label} (${formatDollarMillions(values[idx])})`);
+
+        costBreakdownChart.data.labels = formattedLabels;
+        costBreakdownChart.data.datasets[0].data = values.map((value) => roundTo(value, 3));
+        costBreakdownChart.update();
+
+        const total = values.reduce((sum, value) => sum + value, 0);
+        if (totalBudgetDisplay) totalBudgetDisplay.textContent = formatDollarMillions(total);
+
+        costNumberInputs.forEach((input, idx) => {
+            const labelElement = document.querySelector(`[data-label-for="${input.id}"]`);
+            if (labelElement) labelElement.textContent = formatDollarMillions(values[idx]);
+            const shareElement = document.querySelector(`[data-share-for="${input.id}"]`);
+            const share = total > 0 ? (values[idx] / total) * 100 : 0;
+            if (shareElement) shareElement.textContent = `${roundTo(share, 1).toFixed(1)}% of total`;
+        });
+
+        if (dominantCategoryDisplay && dominantCostShareDisplay) {
+            if (total > 0) {
+                let dominantIndex = 0;
+                values.forEach((value, idx) => {
+                    if (value > values[dominantIndex]) {
+                        dominantIndex = idx;
+                    }
+                });
+                const dominantShare = (values[dominantIndex] / total) * 100;
+                dominantCategoryDisplay.textContent = labels[dominantIndex];
+                dominantCostShareDisplay.textContent = `${roundTo(dominantShare, 1).toFixed(1)}%`;
+            } else {
+                dominantCategoryDisplay.textContent = 'N/A';
+                dominantCostShareDisplay.textContent = '0.0%';
+            }
+        }
+    };
+
+    costRangeInputs.forEach((range) => {
+        range.addEventListener('input', () => {
+            const targetId = range.dataset.target;
+            if (!targetId) return;
+            const pairedInput = document.getElementById(targetId);
+            if (pairedInput) {
+                pairedInput.value = range.value;
+                updateCostBreakdown();
+            }
+        });
+    });
+
+    costNumberInputs.forEach((input) => {
+        input.addEventListener('input', () => {
+            const targetId = input.dataset.target;
+            if (targetId) {
+                const pairedRange = document.getElementById(targetId);
+                if (pairedRange) {
+                    pairedRange.value = input.value;
+                }
+            }
+            updateCostBreakdown();
+        });
+    });
+
+    updateIrrOutputs();
+    updateCostBreakdown();
 });
 </script>
 
