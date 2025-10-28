@@ -1,601 +1,648 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Providence Parcel: Strategic Financial Roadmap</title>
+    <title>Quakertown Multifamily Market Feasibility Analysis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Corporate Calm -->
+    <!-- Application Structure Plan: The application is structured as a top-down executive dashboard. It starts with a high-level summary and key conclusions, allowing users to grasp the project's viability instantly. The user can then scroll through thematic sections: Site Context, Economic & Demographic Drivers, a detailed Interactive Competitive Analysis, and finally, actionable Recommendations. This non-linear, thematic structure was chosen over the report's original format to align with a decision-maker's workflow, prioritizing the most critical information first and allowing for deeper, self-guided exploration of the underlying data. Navigation is facilitated by a sticky header for quick access to each theme. -->
+    <!-- Visualization & Content Choices: 
+        - Executive Summary: Goal(Inform) -> Key Metric Cards -> Static display -> Justification(Quickly convey the report's conclusion) -> HTML/Tailwind.
+        - Demographic Trends: Goal(Show Change/Compare) -> Bar Chart -> Interactive buttons to switch datasets (Population/Households) -> Justification(Visualizes growth trends effectively) -> Chart.js.
+        - Economic Trends: Goal(Show Change) -> Line Chart -> Interactive tooltips -> Justification(Clearly shows unemployment fluctuations over time) -> Chart.js.
+        - Competitive Analysis: Goal(Compare/Organize) -> Sortable Table & Bar Chart -> Clicking table rows highlights data on the chart -> Justification(Creates a powerful tool for direct comparison of competitors against the proposed project, which is the core of the feasibility analysis) -> HTML/JS/Chart.js.
+        - Recommended Unit Mix: Goal(Show Proportion) -> Donut Chart -> Interactive tooltips -> Justification(Simple, clear visualization of the recommended product mix) -> Chart.js.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
+            background-color: #f8f9fa;
         }
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 600px;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
-            height: 320px;
+            height: 300px;
             max-height: 400px;
         }
         @media (min-width: 768px) {
             .chart-container {
-                height: 384px;
+                height: 400px;
             }
         }
-        .kpi-value {
-            font-weight: 900;
-            color: #00488d;
+        .nav-link {
+            transition: color 0.3s ease;
         }
-        .card {
-            background-color: white;
+        .nav-link:hover {
+            color: #1e40af;
+        }
+        .stat-card {
+            background-color: #ffffff;
             border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             padding: 1.5rem;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
         }
-        .flow-arrow {
-            font-size: 2rem;
-            color: #66a3e0;
-            line-height: 1;
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
         }
-        .icon-symbol {
-            font-size: 3rem;
-            line-height: 1;
-            color: #0066cc;
+        .btn-active {
+            background-color: #3b82f6;
+            color: white;
         }
-        .timeline-item {
-            position: relative;
-            padding-left: 2rem;
+        .btn-inactive {
+            background-color: #e5e7eb;
+            color: #374151;
         }
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.5rem;
-            width: 1.5rem;
-            height: 1.5rem;
-            background-color: #00488d;
-            border-radius: 50%;
-            border: 2px solid #99c2e9;
+        .btn-inactive:hover {
+            background-color: #d1d5db;
         }
-        .timeline-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            left: 0.7rem;
-            top: 2rem;
-            height: calc(100% - 2rem);
-            width: 2px;
-            background-color: #00488d;
+        table thead th {
+            cursor: pointer;
         }
     </style>
 </head>
-<body class="text-gray-700">
+<body class="text-gray-800">
 
-    <div class="container mx-auto p-4 md:p-8">
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-lg md:text-xl font-bold text-gray-900">Quakertown Market Analysis</h1>
+                </div>
+                <nav class="hidden md:flex md:space-x-8">
+                    <a href="#overview" class="nav-link text-gray-600 font-medium">Overview</a>
+                    <a href="#demographics" class="nav-link text-gray-600 font-medium">Drivers</a>
+                    <a href="#competition" class="nav-link text-gray-600 font-medium">Competition</a>
+                    <a href="#recommendations" class="nav-link text-gray-600 font-medium">Recommendations</a>
+                </nav>
+                 <div class="md:hidden">
+                    <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option value="#overview">Overview</option>
+                        <option value="#demographics">Drivers</option>
+                        <option value="#competition">Competition</option>
+                        <option value="#recommendations">Recommendations</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
 
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-black text-gray-800">Providence Parcel: Strategic Roadmap</h1>
-            <p class="text-xl md:text-2xl text-[#00488d] font-semibold mt-2">A Detailed Financial Analysis and Implementation Plan</p>
-        </header>
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
 
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <section id="hero" class="text-center py-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-blue-900 tracking-tight">Multifamily Market Feasibility Analysis</h2>
+            <p class="mt-2 text-lg text-gray-600">Proposed 48-Unit Development at 4th &amp; Chestnut St, Quakertown, PA</p>
+            <div class="mt-8 mx-auto max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="stat-card">
+                    <p class="text-sm font-medium text-gray-500">Conclusion</p>
+                    <p class="text-2xl font-bold text-green-600">Project is Feasible</p>
+                </div>
+                <div class="stat-card">
+                    <p class="text-sm font-medium text-gray-500">Projected Absorption</p>
+                    <p class="text-2xl font-bold text-blue-600">4-6 Units / Month</p>
+                </div>
+                <div class="stat-card">
+                    <p class="text-sm font-medium text-gray-500">Achievable Rent/SF</p>
+                    <p class="text-2xl font-bold text-blue-600">$1.95 - $2.10</p>
+                </div>
+            </div>
+             <p class="mt-8 max-w-3xl mx-auto text-gray-700">
+                Based on a comprehensive analysis of economic, demographic, and competitive market factors, the proposed 48-unit multifamily development is well-positioned to succeed. Strong underlying demand drivers and a favorable competitive landscape support the project's viability.
+            </p>
+        </section>
 
-            <section id="financial-analysis" class="lg:col-span-3 card">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Financial Analysis Deep Dive: Why Ownership is the Best Path</h2>
-                <p class="mb-6">The analysis confirms that Scenario 1, direct acquisition and self-development, offers the most significant long-term financial benefits for L&W Supply. This approach is a classic value-add development play that maximizes control and asset appreciation, providing a solid, predictable return profile.</p>
+        <div class="my-12 border-t border-gray-200"></div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="card p-4">
-                        <h3 class="text-xl font-bold text-[#0066cc] mb-2">Compelling Returns</h3>
-                        <p class="text-sm text-gray-600">Projected <strong><span id="baseIrrDisplay">12.0%</span> IRR</strong> and an approximate <strong><span id="equityMultipleDisplay">2.00x</span> equity multiple</strong> over a 10-year horizon underscore the long-term wealth creation opportunity.</p>
+        <section id="overview" class="scroll-mt-20">
+            <h3 class="text-2xl font-bold text-center text-gray-900">Project &amp; Site Overview</h3>
+            <p class="mt-4 max-w-3xl mx-auto text-center text-gray-600">
+                This section provides context for the proposed development and its immediate surroundings. The site's strategic location offers excellent access to local amenities and transportation networks, making it an attractive option for prospective renters in the Quakertown market.
+            </p>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-white p-8 rounded-lg shadow-sm">
+                <div>
+                    <h4 class="text-xl font-semibold">The Proposal</h4>
+                    <p class="mt-2 text-gray-700">A new construction, 48-unit market-rate apartment building featuring a mix of one and two-bedroom units. The project aims to provide modern housing options to meet the growing demand in the borough.</p>
+                    <ul class="mt-4 space-y-2">
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-3 mt-1">&#10003;</span>
+                            <span><span class="font-semibold">Location:</span> Corner of 4th &amp; Chestnut Street</span>
+                        </li>
+                        <li class="flex items-start">
+                           <span class="text-blue-500 mr-3 mt-1">&#10003;</span>
+                           <span><span class="font-semibold">Total Units:</span> 48</span>
+                        </li>
+                         <li class="flex items-start">
+                           <span class="text-blue-500 mr-3 mt-1">&#10003;</span>
+                           <span><span class="font-semibold">Unit Types:</span> One &amp; Two-Bedroom Apartments</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <h4 class="text-xl font-semibold">Neighborhood Highlights</h4>
+                    <p class="mt-2 text-gray-700">The site benefits from a walkable environment with immediate access to key services and attractions.</p>
+                    <ul class="mt-4 space-y-2 text-sm">
+                        <li class="flex items-center"><span class="text-green-500 mr-2">&#9679;</span><span class="font-medium">Retail &amp; Dining:</span> Proximity to Broad Street's commercial corridor.</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">&#9679;</span><span class="font-medium">Recreation:</span> Near Memorial Park and other local parks.</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">&#9679;</span><span class="font-medium">Transportation:</span> Convenient access to Route 309, Route 663, and I-476.</li>
+                         <li class="flex items-center"><span class="text-green-500 mr-2">&#9679;</span><span class="font-medium">Services:</span> Close to St. Luke's Upper Bucks Campus and various schools.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="my-16 border-t border-gray-200"></div>
+
+        <section id="demographics" class="scroll-mt-20">
+            <h3 class="text-2xl font-bold text-center text-gray-900">Market Drivers: Economy &amp; Demographics</h3>
+            <p class="mt-4 max-w-3xl mx-auto text-center text-gray-600">
+                The viability of a new development is rooted in the underlying health of the local economy and its demographic trends. This section explores the key data points for Bucks County, revealing a stable employment base and consistent household growth—both critical drivers of rental housing demand. Use the buttons below to explore different datasets.
+            </p>
+            <div class="mt-8 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-sm">
+                 <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                     <div class="text-center md:text-left">
+                        <h4 class="text-xl font-semibold" id="chart-title">Population Trends</h4>
+                        <p class="text-sm text-gray-500" id="chart-subtitle">Bucks County, 2010-2027</p>
                     </div>
-                    <div class="card p-4">
-                        <h3 class="text-xl font-bold text-[#0066cc] mb-2">Risk Management</h3>
-                        <p class="text-sm text-gray-600">Even with a <strong><span id="costEscalationDisplay">10.0%</span> cost overrun</strong>, modeled returns compress only to <strong><span id="stressIrrDisplay">10.8%</span> IRR</strong>, highlighting resilience reinforced by a guaranteed maximum price (GMP) strategy.</p>
+                    <div class="flex space-x-2 bg-gray-100 p-1 rounded-lg">
+                        <button id="pop-btn" class="btn btn-active">Population</button>
+                        <button id="house-btn" class="btn btn-inactive">Households</button>
                     </div>
-                    <div class="card p-4">
-                        <h3 class="text-xl font-bold text-[#0066cc] mb-2">Strategic Control</h3>
-                        <p class="text-sm text-gray-600">Ownership allows L&amp;W Supply to tailor the facility, capture full appreciation, and capitalize on upside scenarios such as <strong><span id="rentLiftDisplay">+$1.00/SF</span> rent lifts</strong> or <strong><span id="capRateDisplay">5.25%</span> exit cap rates</strong>.</p>
+                 </div>
+                <div class="mt-6 chart-container">
+                    <canvas id="demographicsChart"></canvas>
+                </div>
+            </div>
+             <div class="mt-8 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-sm">
+                 <div class="text-center">
+                    <h4 class="text-xl font-semibold">Unemployment Rate Trends</h4>
+                    <p class="text-sm text-gray-500">Bucks County vs. USA</p>
+                </div>
+                <div class="mt-6 chart-container">
+                    <canvas id="unemploymentChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <div class="my-16 border-t border-gray-200"></div>
+
+        <section id="competition" class="scroll-mt-20">
+            <h3 class="text-2xl font-bold text-center text-gray-900">Interactive Competitive Analysis</h3>
+            <p class="mt-4 max-w-3xl mx-auto text-center text-gray-600">
+                Understanding the existing rental market is crucial. The following table details the key comparable properties in the area. Click on any table header to sort the data, or click on a property row to highlight it on the chart below, comparing its performance against the market average and the proposed rent for the new development.
+            </p>
+            <div class="mt-8 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-sm overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-gray-50 text-xs text-gray-700 uppercase">
+                        <tr>
+                            <th scope="col" class="px-6 py-3" data-sort="name">Property Name</th>
+                            <th scope="col" class="px-6 py-3" data-sort="year">Year Built</th>
+                            <th scope="col" class="px-6 py-3" data-sort="units">Units</th>
+                            <th scope="col" class="px-6 py-3" data-sort="occupancy">Occupancy (%)</th>
+                            <th scope="col" class="px-6 py-3" data-sort="rent_sf">Avg. Rent/SF ($)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="competition-table">
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-8 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-sm">
+                <div class="text-center">
+                    <h4 class="text-xl font-semibold">Rent Per Square Foot Comparison</h4>
+                    <p class="text-sm text-gray-500" id="competition-chart-subtitle">Click a property in the table to compare.</p>
+                </div>
+                <div class="mt-6 chart-container">
+                    <canvas id="competitionChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <div class="my-16 border-t border-gray-200"></div>
+
+        <section id="recommendations" class="scroll-mt-20">
+            <h3 class="text-2xl font-bold text-center text-gray-900">Recommendations &amp; Projections</h3>
+             <p class="mt-4 max-w-3xl mx-auto text-center text-gray-600">
+                Synthesizing all market data, this final section outlines the recommended product mix, achievable rent levels, and absorption forecast. These recommendations are designed to optimize the project's performance and ensure it aligns with the identified market demand.
+            </p>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h4 class="text-xl font-semibold text-center">Recommended Unit Mix</h4>
+                    <div class="mt-4 chart-container mx-auto" style="height: 250px; max-height: 250px;">
+                        <canvas id="unitMixChart"></canvas>
                     </div>
                 </div>
-
-                <div class="mt-8 grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
-                    <div class="card bg-[#f8fbff] border border-[#c9def4]">
-                        <h3 class="text-lg font-semibold text-gray-800">Interactive Sensitivity Lab</h3>
-                        <p class="text-sm text-gray-600 mb-4">Adjust underwriting assumptions to see how Scenario 1 performs across a range of outcomes.</p>
-                        <div class="space-y-6">
-                            <div>
-                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                    <label for="baseIrrInput">Base Case IRR</label>
-                                    <span id="baseIrrOutput" class="text-[#00488d]">12.0%</span>
-                                </div>
-                                <input id="baseIrrInput" type="range" min="8" max="18" step="0.1" value="12" class="mt-2 w-full accent-[#0066cc]">
-                            </div>
-                            <div>
-                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                    <label for="rentLiftInput">Rent Lift (+$/SF)</label>
-                                    <span id="rentLiftOutput" class="text-[#00488d]">+$1.00</span>
-                                </div>
-                                <input id="rentLiftInput" type="range" min="0" max="3" step="0.25" value="1" data-sensitivity="1.8" class="mt-2 w-full accent-[#0066cc]">
-                            </div>
-                            <div>
-                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                    <label for="exitCapInput">Exit Cap Rate</label>
-                                    <span id="exitCapOutput" class="text-[#00488d]">5.25%</span>
-                                </div>
-                                <input id="exitCapInput" type="range" min="4.75" max="7" step="0.05" value="5.25" data-base-cap="5.75" data-sensitivity="4.2" class="mt-2 w-full accent-[#0066cc]">
-                            </div>
-                            <div>
-                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                    <label for="costEscalationInput">Cost Escalation</label>
-                                    <span id="costEscalationOutput" class="text-[#00488d]">10.0%</span>
-                                </div>
-                                <input id="costEscalationInput" type="range" min="-5" max="20" step="0.5" value="10" data-sensitivity="0.12" class="mt-2 w-full accent-[#0066cc]">
-                                <p class="mt-2 text-xs text-gray-500">Negative values indicate cost savings relative to underwriting.</p>
-                            </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h4 class="text-xl font-semibold">Proposed Rents &amp; Features</h4>
+                    <div class="space-y-4 mt-4">
+                        <div>
+                            <p class="font-bold text-blue-700">One-Bedroom Units (Avg. 750 SF)</p>
+                            <p class="text-lg font-semibold">$1,575 / mo ($2.10 / SF)</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-green-700">Two-Bedroom Units (Avg. 1,000 SF)</p>
+                            <p class="text-lg font-semibold">$1,950 / mo ($1.95 / SF)</p>
                         </div>
                     </div>
-                    <div class="space-y-4">
-                        <h3 class="text-lg font-semibold text-gray-800 text-center">IRR Sensitivity to Market Variables</h3>
-                        <div class="chart-container">
-                            <canvas id="irrSensitivityChart"></canvas>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="card border border-[#e5effb] bg-[#f9fbff]">
-                                <h4 class="text-sm font-semibold text-gray-700">Base Case Outcome</h4>
-                                <p class="mt-1 text-xl font-black text-[#00488d]" id="baseIrrResult">12.0%</p>
-                                <p class="text-xs text-gray-500">Modeled IRR before upside or stress scenarios.</p>
-                            </div>
-                            <div class="card border border-[#e5effb] bg-[#f9fbff]">
-                                <h4 class="text-sm font-semibold text-gray-700">Upside Potential</h4>
-                                <p class="mt-1 text-xl font-black text-[#0066cc]" id="upsideIrrResult">13.8%</p>
-                                <p class="text-xs text-gray-500">Best lift from rent growth or cap compression.</p>
-                            </div>
-                            <div class="card border border-[#ffe6d4] bg-[#fff7f0]">
-                                <h4 class="text-sm font-semibold text-gray-700">Cost Stress Test</h4>
-                                <p class="mt-1 text-xl font-black text-[#d97706]" id="stressIrrResultCard">10.8%</p>
-                                <p class="text-xs text-gray-500">IRR impact at the modeled escalation level.</p>
-                            </div>
-                            <div class="card border border-[#d9f4e3] bg-[#f3fcf7]">
-                                <h4 class="text-sm font-semibold text-gray-700">Equity Multiple</h4>
-                                <p class="mt-1 text-xl font-black text-[#047857]" id="equityMultipleResult">2.00x</p>
-                                <p class="text-xs text-gray-500">Approximate equity multiple over ten years.</p>
-                            </div>
-                        </div>
-                        <p class="text-center text-sm text-gray-600">The project's IRR is highly responsive to favorable rent growth and exit cap rate compression, while demonstrating measured resilience against construction cost escalation.</p>
+                     <div class="mt-6">
+                        <h5 class="font-semibold">Recommended Amenities</h5>
+                        <ul class="list-disc list-inside text-gray-600 mt-2 text-sm">
+                            <li>In-unit washer/dryer</li>
+                            <li>Modern kitchens with stainless steel appliances</li>
+                            <li>On-site fitness center</li>
+                            <li>Community lounge / workspace</li>
+                            <li>Sufficient off-street parking</li>
+                        </ul>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
+    </main>
 
-            <section id="roadmap" class="lg:col-span-3 card">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Strategic Roadmap: L&W Supply Direct Acquisition</h2>
-                <p class="mb-6">This phased plan outlines the specific actions and timelines for L&W Supply to execute the direct acquisition and immediate development, ensuring a seamless transition and maximum value capture.</p>
+    <footer class="bg-white mt-16 border-t">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
+            <p>Interactive analysis based on the report prepared by Delta Associates for Sancor Ventures, LTD. August 15, 2022.</p>
+        </div>
+    </footer>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                    <div>
-                        <div class="timeline-item">
-                            <h3 class="font-bold text-[#0066cc]">Phase 1: Immediate Action (0-3 Months)</h3>
-                            <ul class="list-disc list-inside mt-2 text-sm text-gray-600">
-                                <li>Secure the land with a Purchase and Sale Agreement.</li>
-                                <li>Engage project team (Architect, Engineer, General Contractor, Environmental Consultant).</li>
-                                <li>Initiate talks with lenders to lock in **6% fixed-rate financing** at a **70% loan-to-cost**.</li>
-                            </ul>
-                        </div>
-                        <div class="timeline-item mt-8">
-                            <h3 class="font-bold text-[#0066cc]">Phase 2: Entitlement & Permitting (3-9 Months)</h3>
-                             <ul class="list-disc list-inside mt-2 text-sm text-gray-600">
-                                <li>Submit final plans for zoning and site plan review.</li>
-                                <li>Obtain all necessary building permits.</li>
-                                <li>Proactively engage with local officials to streamline the process.</li>
-                                <li>Coordinate with utility providers for tie-ins.</li>
-                            </ul>
-                        </div>
-                        <div class="timeline-item mt-8">
-                            <h3 class="font-bold text-[#0066cc]">Phase 3: Construction & Occupancy (9-20 Months)</h3>
-                            <ul class="list-disc list-inside mt-2 text-sm text-gray-600">
-                                <li>Break ground and begin construction under a GMP contract.</li>
-                                <li>Implement a project management system for progress tracking.</li>
-                                <li>Complete final inspections for the certificate of occupancy.</li>
-                                <li>Begin interior build-out and occupy the new facility.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="space-y-6">
-                        <div class="card bg-[#f9fbff] border border-[#d5e5fa]">
-                            <h3 class="text-lg font-semibold text-gray-800">Adjust Project Cost Assumptions</h3>
-                            <p class="text-sm text-gray-600 mb-4">Use sliders or direct entry (in millions) to tailor the development budget to current market intelligence.</p>
-                            <div class="space-y-5">
-                                <div>
-                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                        <label for="landCostValue">Land Valuation</label>
-                                        <span data-label-for="landCostValue" class="text-[#00488d]">$1.23M</span>
-                                    </div>
-                                    <input id="landCostRange" type="range" min="0.8" max="2" step="0.025" value="1.225" data-target="landCostValue" class="mt-2 w-full accent-[#0066cc]">
-                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
-                                        <input id="landCostValue" type="number" min="0.8" max="2" step="0.025" value="1.225" data-target="landCostRange" data-cost-input data-label="Land Valuation" class="w-20 rounded border border-gray-300 px-2 py-1 text-xs">
-                                        <span data-share-for="landCostValue">22.7% of total</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                        <label for="hardCostValue">Construction Hard Costs</label>
-                                        <span data-label-for="hardCostValue" class="text-[#00488d]">$3.50M</span>
-                                    </div>
-                                    <input id="hardCostRange" type="range" min="2.5" max="5" step="0.05" value="3.5" data-target="hardCostValue" class="mt-2 w-full accent-[#0066cc]">
-                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
-                                        <input id="hardCostValue" type="number" min="2.5" max="5" step="0.05" value="3.5" data-target="hardCostRange" data-cost-input data-label="Construction Hard Costs" class="w-24 rounded border border-gray-300 px-2 py-1 text-xs">
-                                        <span data-share-for="hardCostValue">64.8% of total</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                        <label for="softCostValue">Ancillary Soft Costs</label>
-                                        <span data-label-for="softCostValue" class="text-[#00488d]">$0.50M</span>
-                                    </div>
-                                    <input id="softCostRange" type="range" min="0.2" max="1" step="0.025" value="0.5" data-target="softCostValue" class="mt-2 w-full accent-[#0066cc]">
-                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
-                                        <input id="softCostValue" type="number" min="0.2" max="1" step="0.025" value="0.5" data-target="softCostRange" data-cost-input data-label="Ancillary Soft Costs" class="w-24 rounded border border-gray-300 px-2 py-1 text-xs">
-                                        <span data-share-for="softCostValue">9.3% of total</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                        <label for="contingencyValue">Contingency</label>
-                                        <span data-label-for="contingencyValue" class="text-[#00488d]">$0.18M</span>
-                                    </div>
-                                    <input id="contingencyRange" type="range" min="0" max="0.5" step="0.01" value="0.175" data-target="contingencyValue" class="mt-2 w-full accent-[#0066cc]">
-                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
-                                        <input id="contingencyValue" type="number" min="0" max="0.5" step="0.01" value="0.175" data-target="contingencyRange" data-cost-input data-label="Contingency" class="w-20 rounded border border-gray-300 px-2 py-1 text-xs">
-                                        <span data-share-for="contingencyValue">3.2% of total</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between text-sm font-semibold text-gray-700 border-t border-[#dbe7f9] pt-4 mt-4">
-                                <span>Total Project Budget</span>
-                                <span id="totalProjectBudget" class="text-[#0b5394]">$5.40M</span>
-                            </div>
-                        </div>
-                        <div class="chart-container h-80 md:h-96">
-                            <canvas id="costBreakdownChart"></canvas>
-                        </div>
-                        <p class="text-center text-sm text-gray-600">The majority of the budget is allocated to <strong><span id="dominantCostCategory">Construction Hard Costs</span></strong>, currently representing <strong><span id="dominantCostShare">64.8%</span></strong> of projected spend.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="synthesis" class="lg:col-span-3">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Strategic Synthesis: Unlocking Long-Term Value</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="card text-center">
-                        <div class="icon-symbol">👑</div>
-                        <h3 class="text-xl font-bold my-3 text-gray-800">For Maximum Control</h3>
-                        <p class="text-gray-600">Scenario 1 offers the most robust long-term outcome, full operational control, and captures all asset appreciation despite higher capital demands.</p>
-                    </div>
-                    <div class="card text-center">
-                         <div class="icon-symbol">🛡️</div>
-                        <h3 class="text-xl font-bold my-3 text-gray-800">For Capital Preservation</h3>
-                        <p class="text-gray-600">Scenario 2 provides complete risk insulation and requires zero equity, but perpetuates rental obligations without any wealth creation.</p>
-                    </div>
-                    <div class="card text-center">
-                         <div class="icon-symbol">⚖️</div>
-                        <h3 class="text-xl font-bold my-3 text-gray-800">For Negotiated Optionality</h3>
-                        <p class="text-gray-600">Scenario 3 affords a strategic hedge, granting interim occupancy with an embedded, attractively priced path to future ownership.</p>
-                    </div>
-                </div>
-            </section>
-
-        </main>
-        
-        <footer class="text-center mt-12 py-4 border-t border-gray-300">
-            <p class="text-sm text-gray-500">Providence Parcel Financial Framework | Confidential Analysis</p>
-        </footer>
-
-    </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const brilliantBlues = {
-        darkBlue: '#00488d',
-        mediumBlue: '#0066cc',
-        lightBlue: '#3385d6',
-        lighterBlue: '#66a3e0',
-        paleBlue: '#99c2e9',
-        fontColor: '#4b5563'
-    };
-
-    const globalChartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                labels: {
-                    color: brilliantBlues.fontColor,
-                    boxWidth: 15,
-                    padding: 15
-                }
-            },
-            tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                titleFont: { size: 14, weight: 'bold' },
-                bodyFont: { size: 12 },
-                padding: 10,
-                cornerRadius: 4,
-                callbacks: {
-                    title: function (tooltipItems) {
-                        const item = tooltipItems[0];
-                        const label = item.chart.data.labels[item.dataIndex];
-                        return Array.isArray(label) ? label.join(' ') : label;
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const chartHelpers = {
+                wrapText: function(text, maxLen) {
+                    if (typeof text !== 'string') return [text];
+                    const words = text.split(' ');
+                    let lines = [];
+                    let currentLine = '';
+                    words.forEach(word => {
+                        if ((currentLine + ' ' + word).length > maxLen && currentLine.length > 0) {
+                            lines.push(currentLine);
+                            currentLine = word;
+                        } else {
+                            currentLine = currentLine ? currentLine + ' ' + word : word;
+                        }
+                    });
+                    lines.push(currentLine);
+                    return lines;
+                },
+                defaultOptions: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 12 },
+                            padding: 10,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: '#e5e7eb',
+                            },
+                             ticks: { color: '#6b7280' }
+                        },
+                        x: {
+                            grid: {
+                                display: false,
+                            },
+                            ticks: { color: '#6b7280' }
+                        }
                     }
                 }
-            }
-        },
-        scales: {
-            x: {
-                ticks: { color: brilliantBlues.fontColor },
-                grid: { display: false }
-            },
-            y: {
-                ticks: { color: brilliantBlues.fontColor },
-                grid: { color: '#e5e7eb' }
-            }
-        }
-    };
+            };
 
-    const formatLabel = (str, maxLen = 16) => {
-        if (str.length <= maxLen) return str;
-        const words = str.split(' ');
-        const lines = [];
-        let currentLine = '';
-        words.forEach((word) => {
-            if ((currentLine + ' ' + word).trim().length > maxLen) {
-                lines.push(currentLine.trim());
-                currentLine = word;
-            } else {
-                currentLine = (currentLine + ' ' + word).trim();
-            }
-        });
-        lines.push(currentLine.trim());
-        return lines;
-    };
-
-    const roundTo = (value, decimals = 1) => {
-        const factor = 10 ** decimals;
-        return Math.round(value * factor) / factor;
-    };
-
-    const formatPercent = (value, decimals = 1) => `${roundTo(value, decimals).toFixed(decimals)}%`;
-    const formatSignedPercent = (value, decimals = 1) => `${value >= 0 ? '' : '-'}${roundTo(Math.abs(value), decimals).toFixed(decimals)}%`;
-    const formatRentLift = (value) => `${value >= 0 ? '+' : '-'}$${Math.abs(value).toFixed(2)}/SF`;
-    const formatCapRate = (value) => `${Number(value).toFixed(2)}%`;
-    const formatDollarMillions = (value, decimals = 2) => {
-        const safeValue = Number.isFinite(value) ? value : 0;
-        return `$${roundTo(safeValue, decimals).toFixed(decimals)}M`;
-    };
-    const formatEquityMultiple = (value) => `${roundTo(value, 2).toFixed(2)}x`;
-
-    const baseIrrInput = document.getElementById('baseIrrInput');
-    const rentLiftInput = document.getElementById('rentLiftInput');
-    const exitCapInput = document.getElementById('exitCapInput');
-    const costEscalationInput = document.getElementById('costEscalationInput');
-
-    const irrCtx = document.getElementById('irrSensitivityChart');
-    let irrChart;
-    if (irrCtx) {
-        irrChart = new Chart(irrCtx, {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Resulting IRR (%)',
-                    data: [],
-                    backgroundColor: [
-                        brilliantBlues.lightBlue,
-                        brilliantBlues.mediumBlue,
-                        brilliantBlues.darkBlue,
-                        brilliantBlues.lighterBlue
-                    ],
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                ...globalChartOptions,
-                plugins: { ...globalChartOptions.plugins, legend: { display: false } },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 6,
-                        title: { display: true, text: 'IRR (%)', color: brilliantBlues.fontColor }
+            const dataStore = {
+                demographics: {
+                    population: {
+                        labels: ['2010', '2022', '2027 (Est.)'],
+                        data: [625249, 644598, 655459],
+                        title: 'Population Trends',
+                        subtitle: 'Bucks County, 2010-2027'
+                    },
+                    households: {
+                        labels: ['2010', '2022', '2027 (Est.)'],
+                        data: [238321, 252061, 257760],
+                        title: 'Household Trends',
+                        subtitle: 'Bucks County, 2010-2027'
                     }
+                },
+                unemployment: {
+                    labels: ['Dec 2019', 'Dec 2020', 'Dec 2021', 'Jun 2022'],
+                    bucksCounty: [3.4, 5.4, 3.8, 3.5],
+                    usa: [3.6, 6.7, 3.9, 3.6]
+                },
+                competition: [
+                    { name: 'The Lofts at the Mill', year: 2021, units: 51, occupancy: 98, rent_sf: 2.13 },
+                    { name: 'The Flats at the Mill', year: 2017, units: 50, occupancy: 98, rent_sf: 1.83 },
+                    { name: 'Quakertown West Apts', year: 1974, units: 102, occupancy: 99, rent_sf: 1.48 },
+                    { name: 'Richland Mead', year: 1988, units: 198, occupancy: 98, rent_sf: 1.63 },
+                    { name: 'Patriot Square', year: 2010, units: 100, occupancy: 97, rent_sf: 1.58 },
+                    { name: 'The Glen at Old Town', year: 2005, units: 120, occupancy: 96, rent_sf: 1.55 },
+                ],
+                unitMix: {
+                    labels: ['One-Bedroom', 'Two-Bedroom'],
+                    data: [28, 20]
                 }
-            }
-        });
-    }
+            };
+            
+            let sortConfig = { key: 'name', asc: true };
+            let competitionChartInstance;
 
-    const irrOutputs = {
-        baseIrrOutput: document.getElementById('baseIrrOutput'),
-        rentLiftOutput: document.getElementById('rentLiftOutput'),
-        exitCapOutput: document.getElementById('exitCapOutput'),
-        costEscalationOutput: document.getElementById('costEscalationOutput'),
-        baseIrrDisplay: document.getElementById('baseIrrDisplay'),
-        equityMultipleDisplay: document.getElementById('equityMultipleDisplay'),
-        costEscalationDisplay: document.getElementById('costEscalationDisplay'),
-        stressIrrDisplay: document.getElementById('stressIrrDisplay'),
-        rentLiftDisplay: document.getElementById('rentLiftDisplay'),
-        capRateDisplay: document.getElementById('capRateDisplay'),
-        baseIrrResult: document.getElementById('baseIrrResult'),
-        upsideIrrResult: document.getElementById('upsideIrrResult'),
-        stressIrrResultCard: document.getElementById('stressIrrResultCard'),
-        equityMultipleResult: document.getElementById('equityMultipleResult')
-    };
-
-    const updateIrrOutputs = () => {
-        if (!irrChart || !baseIrrInput || !rentLiftInput || !exitCapInput || !costEscalationInput) {
-            return;
-        }
-
-        const baseIrr = Number(baseIrrInput.value);
-        const rentLift = Number(rentLiftInput.value);
-        const rentSensitivity = Number(rentLiftInput.dataset.sensitivity || 1.8);
-        const exitCap = Number(exitCapInput.value);
-        const capBase = Number(exitCapInput.dataset.baseCap || 5.75);
-        const capSensitivity = Number(exitCapInput.dataset.sensitivity || 4.2);
-        const costEscalation = Number(costEscalationInput.value);
-        const costSensitivity = Number(costEscalationInput.dataset.sensitivity || 0.12);
-
-        const rentIrr = baseIrr + rentLift * rentSensitivity;
-        const capIrr = baseIrr + (capBase - exitCap) * capSensitivity;
-        const stressIrr = baseIrr - costEscalation * costSensitivity;
-        const upsideIrr = Math.max(rentIrr, capIrr);
-        const equityMultiple = 1 + baseIrr / 12;
-
-        irrChart.data.datasets[0].data = [
-            roundTo(baseIrr, 2),
-            roundTo(rentIrr, 2),
-            roundTo(capIrr, 2),
-            roundTo(stressIrr, 2)
-        ];
-        irrChart.data.labels = [
-            'Base Case',
-            formatLabel(`Rent Lift Impact (${formatRentLift(rentLift)})`),
-            formatLabel(`Exit Cap @ ${formatCapRate(exitCap)}`),
-            formatLabel(`${costEscalation >= 0 ? formatPercent(costEscalation, 1) + ' Cost Overrun' : formatSignedPercent(costEscalation, 1) + ' Cost Savings'}`)
-        ];
-        irrChart.update();
-
-        if (irrOutputs.baseIrrOutput) irrOutputs.baseIrrOutput.textContent = formatPercent(baseIrr, 1);
-        if (irrOutputs.rentLiftOutput) irrOutputs.rentLiftOutput.textContent = formatRentLift(rentLift).replace('/SF', '');
-        if (irrOutputs.exitCapOutput) irrOutputs.exitCapOutput.textContent = formatCapRate(exitCap);
-        if (irrOutputs.costEscalationOutput) irrOutputs.costEscalationOutput.textContent = formatSignedPercent(costEscalation, 1);
-
-        if (irrOutputs.baseIrrDisplay) irrOutputs.baseIrrDisplay.textContent = formatPercent(baseIrr, 1);
-        if (irrOutputs.equityMultipleDisplay) irrOutputs.equityMultipleDisplay.textContent = formatEquityMultiple(equityMultiple);
-        if (irrOutputs.costEscalationDisplay) irrOutputs.costEscalationDisplay.textContent = formatSignedPercent(costEscalation, 1);
-        if (irrOutputs.stressIrrDisplay) irrOutputs.stressIrrDisplay.textContent = formatPercent(stressIrr, 1);
-        if (irrOutputs.rentLiftDisplay) irrOutputs.rentLiftDisplay.textContent = formatRentLift(rentLift);
-        if (irrOutputs.capRateDisplay) irrOutputs.capRateDisplay.textContent = formatCapRate(exitCap);
-        if (irrOutputs.baseIrrResult) irrOutputs.baseIrrResult.textContent = formatPercent(baseIrr, 1);
-        if (irrOutputs.upsideIrrResult) irrOutputs.upsideIrrResult.textContent = formatPercent(upsideIrr, 1);
-        if (irrOutputs.stressIrrResultCard) irrOutputs.stressIrrResultCard.textContent = formatPercent(stressIrr, 1);
-        if (irrOutputs.equityMultipleResult) irrOutputs.equityMultipleResult.textContent = formatEquityMultiple(equityMultiple);
-    };
-
-    [baseIrrInput, rentLiftInput, exitCapInput, costEscalationInput].forEach((input) => {
-        if (input) {
-            input.addEventListener('input', updateIrrOutputs);
-        }
-    });
-
-    const costBreakdownCtx = document.getElementById('costBreakdownChart');
-    let costBreakdownChart;
-    if (costBreakdownCtx) {
-        costBreakdownChart = new Chart(costBreakdownCtx, {
-            type: 'pie',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Project Costs',
-                    data: [],
-                    backgroundColor: [
-                        brilliantBlues.darkBlue,
-                        brilliantBlues.mediumBlue,
-                        brilliantBlues.lightBlue,
-                        brilliantBlues.lighterBlue
-                    ],
-                    borderColor: '#ffffff',
-                    borderWidth: 2
-                }]
-            },
-            options: { ...globalChartOptions, scales: { x: { display: false }, y: { display: false } } }
-        });
-    }
-
-    const costNumberInputs = Array.from(document.querySelectorAll('input[data-cost-input]'));
-    const costRangeInputs = Array.from(document.querySelectorAll('input[type="range"][data-target]'));
-    const totalBudgetDisplay = document.getElementById('totalProjectBudget');
-    const dominantCategoryDisplay = document.getElementById('dominantCostCategory');
-    const dominantCostShareDisplay = document.getElementById('dominantCostShare');
-
-    const updateCostBreakdown = () => {
-        if (!costBreakdownChart || costNumberInputs.length === 0) {
-            return;
-        }
-
-        const values = costNumberInputs.map((input) => Number(input.value));
-        const labels = costNumberInputs.map((input) => input.dataset.label || '');
-        const formattedLabels = labels.map((label, idx) => `${label} (${formatDollarMillions(values[idx])})`);
-
-        costBreakdownChart.data.labels = formattedLabels;
-        costBreakdownChart.data.datasets[0].data = values.map((value) => roundTo(value, 3));
-        costBreakdownChart.update();
-
-        const total = values.reduce((sum, value) => sum + value, 0);
-        if (totalBudgetDisplay) totalBudgetDisplay.textContent = formatDollarMillions(total);
-
-        costNumberInputs.forEach((input, idx) => {
-            const labelElement = document.querySelector(`[data-label-for="${input.id}"]`);
-            if (labelElement) labelElement.textContent = formatDollarMillions(values[idx]);
-            const shareElement = document.querySelector(`[data-share-for="${input.id}"]`);
-            const share = total > 0 ? (values[idx] / total) * 100 : 0;
-            if (shareElement) shareElement.textContent = `${roundTo(share, 1).toFixed(1)}% of total`;
-        });
-
-        if (dominantCategoryDisplay && dominantCostShareDisplay) {
-            if (total > 0) {
-                let dominantIndex = 0;
-                values.forEach((value, idx) => {
-                    if (value > values[dominantIndex]) {
-                        dominantIndex = idx;
+            function renderDemographicsChart(dataset) {
+                const ctx = document.getElementById('demographicsChart').getContext('2d');
+                if (window.demographicsChartInstance) {
+                    window.demographicsChartInstance.destroy();
+                }
+                window.demographicsChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: dataStore.demographics[dataset].labels,
+                        datasets: [{
+                            label: 'Total',
+                            data: dataStore.demographics[dataset].data,
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        ...chartHelpers.defaultOptions,
+                        plugins: { ...chartHelpers.defaultOptions.plugins, legend: { display: false } },
+                        scales: {
+                             y: { ...chartHelpers.defaultOptions.scales.y, beginAtZero: false, 
+                                ticks: {
+                                    callback: function(value) {
+                                        return value.toLocaleString();
+                                    }
+                                }
+                             },
+                             x: { ...chartHelpers.defaultOptions.scales.x }
+                        }
                     }
                 });
-                const dominantShare = (values[dominantIndex] / total) * 100;
-                dominantCategoryDisplay.textContent = labels[dominantIndex];
-                dominantCostShareDisplay.textContent = `${roundTo(dominantShare, 1).toFixed(1)}%`;
-            } else {
-                dominantCategoryDisplay.textContent = 'N/A';
-                dominantCostShareDisplay.textContent = '0.0%';
+                document.getElementById('chart-title').innerText = dataStore.demographics[dataset].title;
+                document.getElementById('chart-subtitle').innerText = dataStore.demographics[dataset].subtitle;
             }
-        }
-    };
 
-    costRangeInputs.forEach((range) => {
-        range.addEventListener('input', () => {
-            const targetId = range.dataset.target;
-            if (!targetId) return;
-            const pairedInput = document.getElementById(targetId);
-            if (pairedInput) {
-                pairedInput.value = range.value;
-                updateCostBreakdown();
+            function renderUnemploymentChart() {
+                const ctx = document.getElementById('unemploymentChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dataStore.unemployment.labels,
+                        datasets: [
+                            {
+                                label: 'Bucks County',
+                                data: dataStore.unemployment.bucksCounty,
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                tension: 0.1,
+                                fill: true,
+                            },
+                            {
+                                label: 'United States',
+                                data: dataStore.unemployment.usa,
+                                borderColor: 'rgba(16, 185, 129, 1)',
+                                backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                                tension: 0.1,
+                                fill: true,
+                            }
+                        ]
+                    },
+                    options: {
+                        ...chartHelpers.defaultOptions,
+                        scales: {
+                            y: { ...chartHelpers.defaultOptions.scales.y,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                             },
+                            x: { ...chartHelpers.defaultOptions.scales.x }
+                        }
+                    }
+                });
             }
-        });
-    });
+            
+            function renderCompetitionTable() {
+                const tableBody = document.getElementById('competition-table');
+                tableBody.innerHTML = '';
 
-    costNumberInputs.forEach((input) => {
-        input.addEventListener('input', () => {
-            const targetId = input.dataset.target;
-            if (targetId) {
-                const pairedRange = document.getElementById(targetId);
-                if (pairedRange) {
-                    pairedRange.value = input.value;
+                const sortedData = [...dataStore.competition].sort((a, b) => {
+                    if (a[sortConfig.key] < b[sortConfig.key]) return sortConfig.asc ? -1 : 1;
+                    if (a[sortConfig.key] > b[sortConfig.key]) return sortConfig.asc ? 1 : -1;
+                    return 0;
+                });
+
+                sortedData.forEach((prop, index) => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white border-b hover:bg-gray-50 cursor-pointer';
+                    row.innerHTML = `
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">${prop.name}</td>
+                        <td class="px-6 py-4">${prop.year}</td>
+                        <td class="px-6 py-4">${prop.units}</td>
+                        <td class="px-6 py-4">${prop.occupancy}</td>
+                        <td class="px-6 py-4">${prop.rent_sf.toFixed(2)}</td>
+                    `;
+                    row.addEventListener('click', () => {
+                         updateCompetitionChart(prop.name);
+                         document.querySelectorAll('#competition-table tr').forEach(r => r.classList.remove('bg-blue-100'));
+                         row.classList.add('bg-blue-100');
+                    });
+                    tableBody.appendChild(row);
+                });
+            }
+
+            function renderCompetitionChart() {
+                const ctx = document.getElementById('competitionChart').getContext('2d');
+                const avgRentSf = dataStore.competition.reduce((acc, curr) => acc + curr.rent_sf, 0) / dataStore.competition.length;
+                
+                competitionChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Market Average', 'Proposed (1-Bed)', 'Proposed (2-Bed)'],
+                        datasets: [{
+                            label: 'Rent per Square Foot ($)',
+                            data: [avgRentSf, 2.10, 1.95],
+                            backgroundColor: [
+                                'rgba(107, 114, 128, 0.7)',
+                                'rgba(59, 130, 246, 0.7)',
+                                'rgba(22, 163, 74, 0.7)',
+                            ],
+                            borderColor: [
+                                'rgba(107, 114, 128, 1)',
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(22, 163, 74, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                       ...chartHelpers.defaultOptions,
+                        scales: {
+                            y: {
+                                ...chartHelpers.defaultOptions.scales.y,
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toFixed(2);
+                                    }
+                                }
+                            },
+                             x: { 
+                                ...chartHelpers.defaultOptions.scales.x,
+                                ticks: {
+                                    ...chartHelpers.defaultOptions.scales.x.ticks,
+                                    callback: function(value, index, ticks) {
+                                        return chartHelpers.wrapText(this.getLabelForValue(value), 16);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function updateCompetitionChart(propertyName) {
+                const property = dataStore.competition.find(p => p.name === propertyName);
+                if (!property) return;
+                
+                const avgRentSf = dataStore.competition.reduce((acc, curr) => acc + curr.rent_sf, 0) / dataStore.competition.length;
+
+                const newLabels = ['Market Average', 'Proposed (1-Bed)', 'Proposed (2-Bed)', propertyName];
+                const newData = [avgRentSf, 2.10, 1.95, property.rent_sf];
+                const newBackgroundColors = [
+                    'rgba(107, 114, 128, 0.7)',
+                    'rgba(59, 130, 246, 0.7)',
+                    'rgba(22, 163, 74, 0.7)',
+                    'rgba(234, 179, 8, 0.7)' 
+                ];
+                 const newBorderColors = [
+                    'rgba(107, 114, 128, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(22, 163, 74, 1)',
+                    'rgba(234, 179, 8, 1)'
+                ];
+                
+                competitionChartInstance.data.labels = newLabels;
+                competitionChartInstance.data.datasets[0].data = newData;
+                competitionChartInstance.data.datasets[0].backgroundColor = newBackgroundColors;
+                competitionChartInstance.data.datasets[0].borderColor = newBorderColors;
+                competitionChartInstance.update();
+                document.getElementById('competition-chart-subtitle').innerText = `Comparing ${propertyName} to market and proposal.`;
+            }
+
+            function renderUnitMixChart() {
+                const ctx = document.getElementById('unitMixChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: dataStore.unitMix.labels.map((label, i) => `${label} (${dataStore.unitMix.data[i]} Units)`),
+                        datasets: [{
+                            data: dataStore.unitMix.data,
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.8)',
+                                'rgba(16, 185, 129, 0.8)',
+                            ],
+                            borderColor: [
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(16, 185, 129, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                ...chartHelpers.defaultOptions.plugins.tooltip,
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                            const percentage = ((context.raw / total) * 100).toFixed(1);
+                                            label += `${context.raw} units (${percentage}%)`;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const popBtn = document.getElementById('pop-btn');
+            const houseBtn = document.getElementById('house-btn');
+
+            popBtn.addEventListener('click', () => {
+                renderDemographicsChart('population');
+                popBtn.classList.replace('btn-inactive', 'btn-active');
+                houseBtn.classList.replace('btn-active', 'btn-inactive');
+            });
+
+            houseBtn.addEventListener('click', () => {
+                renderDemographicsChart('households');
+                houseBtn.classList.replace('btn-inactive', 'btn-active');
+                popBtn.classList.replace('btn-active', 'btn-inactive');
+            });
+            
+            document.querySelectorAll('#competition thead th').forEach(th => {
+                th.addEventListener('click', () => {
+                    const key = th.dataset.sort;
+                    if (sortConfig.key === key) {
+                        sortConfig.asc = !sortConfig.asc;
+                    } else {
+                        sortConfig.key = key;
+                        sortConfig.asc = true;
+                    }
+                    renderCompetitionTable();
+                });
+            });
+
+            document.getElementById('mobile-nav').addEventListener('change', function(e) {
+                const target = document.querySelector(e.target.value);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
                 }
-            }
-            updateCostBreakdown();
+            });
+
+            renderDemographicsChart('population');
+            renderUnemploymentChart();
+            renderCompetitionTable();
+            renderCompetitionChart();
+            renderUnitMixChart();
         });
-    });
-
-    updateIrrOutputs();
-    updateCostBreakdown();
-});
-</script>
-
+    </script>
 </body>
 </html>
