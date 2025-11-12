@@ -3,225 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Field Development | Investor One-Pager</title>
+    <title>Field Development - Delmar Orchard Infographic</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+      // Custom Tailwind Configuration
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              // Re-creating the brand palette from the slides
+              'brand-dark': '#04471C', // Dark Green
+              'brand-mid': '#508D4E',  // Mid-Green
+              'brand-light': '#F4F7F4', // Light green/gray tile
+              'brand-bg': '#F9FAF8',    // Slide background
+              'brand-gray': '#475569',  // Neutral gray
+            },
+            fontFamily: {
+              // Setting up the fonts from the slides
+              'poppins': ['Poppins', 'sans-serif'],
+              'lato': ['Lato', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
     <style>
-        :root {
-            --forest-dark: #0f3d2e;
-            --forest-base: #145c3d;
-            --forest-light: #d9f0e2;
-            --forest-accent: #6abf69;
-            --neutral-gray: #4b5563;
-            --card-bg: #ffffff;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f5faf6 0%, #edf4ed 60%, #e8efe9 100%);
-            color: var(--neutral-gray);
-        }
-
-        h1, h2, h3, h4 {
-            font-family: 'Moon Vial', 'Inter', sans-serif;
-            color: var(--forest-dark);
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 1rem;
-            box-shadow: 0 20px 45px -25px rgba(15, 61, 46, 0.3);
-            border: 1px solid rgba(20, 92, 61, 0.08);
-        }
-
-        .icon-circle {
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 9999px;
-            display: grid;
-            place-items: center;
-            font-weight: 700;
-            font-size: 1.125rem;
-            background-color: var(--forest-light);
-            color: var(--forest-base);
-            border: 1px solid rgba(20, 92, 61, 0.25);
-        }
-
-        .hero-image {
-            background-image: linear-gradient(135deg, rgba(15, 61, 46, 0.85), rgba(106, 191, 105, 0.75)), url('https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            border-radius: 1.5rem;
-            min-height: 320px;
-        }
-
-        .chart-placeholder {
-            background: repeating-linear-gradient(135deg, rgba(15, 61, 46, 0.08) 0, rgba(15, 61, 46, 0.08) 12px, transparent 12px, transparent 24px);
-            border-radius: 0.75rem;
-            border: 1px dashed rgba(15, 61, 46, 0.25);
-        }
+      /* Applying base fonts */
+      body {
+        font-family: 'Lato', sans-serif;
+        color: #333333;
+      }
+      h1, h2, h3, h4, h5, h6, .font-poppins {
+        font-family: 'Poppins', sans-serif;
+      }
+      /* Style for the vertical stepper */
+      .stepper-item:not(:last-child)::before {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 56px; /* Position below the icon */
+        width: 4px;
+        height: calc(100% - 40px); /* Adjust height to connect */
+        background-color: #508D4E; /* brand-mid */
+      }
+      .stepper-icon {
+        z-index: 10;
+      }
     </style>
 </head>
-<body>
-    <div class="max-w-6xl mx-auto px-5 py-12 space-y-12">
-        <header class="flex flex-col gap-2 items-start">
-            <p class="uppercase tracking-[0.25em] text-xs text-[var(--forest-base)] font-semibold">Field Development, LLC · I-81 Corridor Multifamily</p>
-            <h1 class="text-4xl md:text-5xl font-black">Cement your family’s legacy.</h1>
-            <p class="text-xl md:text-2xl text-[var(--forest-base)] max-w-3xl">
-                Institutional-quality multifamily on the I-81 corridor, designed for long-term ownership, stabilized cash flow, and meaningful appreciation.
-            </p>
+<body class="bg-slate-200">
+
+    <!-- Main Infographic Container -->
+    <div class="max-w-4xl mx-auto my-12 bg-brand-bg shadow-2xl rounded-lg overflow-hidden">
+
+        <!-- 1. Header Section -->
+        <header class="text-center p-12 bg-white">
+            <div class="flex justify-center mb-6">
+                <div class="bg-brand-dark rounded-xl px-6 py-3 inline-flex items-center shadow-sm">
+                    <img src="fp-logo-webWhite.png" alt="Field Properties Logo" class="h-8 w-auto">
+                </div>
+            </div>
+            <h4 class="text-sm font-semibold text-brand-mid uppercase tracking-widest">Field Development, LLC</h4>
+            <h1 class="font-poppins text-5xl font-bold text-brand-dark mt-4">Cement Your Family's Legacy</h1>
+            <p class="text-xl text-brand-gray mt-6 max-w-2xl mx-auto">An institutional-quality investment in the <strong>Delmar Orchard Apartments</strong>, designed for long-term cash flow, tax shelter, and meaningful appreciation.</p>
         </header>
 
-        <section class="card p-8 lg:p-10">
-            <div class="grid lg:grid-cols-2 gap-10 items-center">
-                <div class="space-y-6">
-                    <h2 class="text-2xl font-extrabold">Invest $3–5 million into a single Class A multifamily project.</h2>
-                    <p class="text-lg leading-relaxed">
-                        Target predictable distributions, powerful tax shelter, and durable asset appreciation with a 10-year hold that keeps capital disciplined and focused on long-term family wealth.
-                    </p>
-                    <div class="grid sm:grid-cols-3 gap-4">
-                        <div class="card border border-transparent bg-[var(--forest-light)]/60 p-4 text-sm">
-                            <div class="icon-circle mb-3">CF</div>
-                            <h3 class="text-lg font-semibold mb-1">Stabilized Cash Flow</h3>
-                            <p class="text-sm">Predictable investor distributions from a professionally managed multifamily asset.</p>
+        <!-- 2. The Opportunity Section -->
+        <section class="bg-brand-light p-12 border-y border-gray-200">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div>
+                    <h3 class="text-4xl font-bold font-poppins text-brand-dark">$3-5 Million</h3>
+                    <p class="text-lg text-brand-gray mt-2">Target Investor Contribution</p>
+                </div>
+                <div>
+                    <h3 class="text-4xl font-bold font-poppins text-brand-dark">240 Units</h3>
+                    <p class="text-lg text-brand-gray mt-2">Class A Multifamily Project</p>
+                </div>
+                <div>
+                    <h3 class="text-4xl font-bold font-poppins text-brand-dark">10-Year Hold</h3>
+                    <p class="text-lg text-brand-gray mt-2">Designed for Long-Term Wealth</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Core Pillars Section -->
+        <section class="p-12">
+            <h2 class="text-3xl font-bold font-poppins text-brand-dark text-center">The Core Investment Pillars</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
+                <div class="text-center">
+                    <i class="fas fa-cash-register text-5xl text-brand-mid"></i>
+                    <h3 class="text-2xl font-semibold font-poppins text-brand-dark mt-4">Stabilized Cash Flow</h3>
+                    <p class="text-md text-brand-gray mt-2">Predictable distributions from a professionally managed asset.</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-chart-line text-5xl text-brand-mid"></i>
+                    <h3 class="text-2xl font-semibold font-poppins text-brand-dark mt-4">Meaningful Appreciation</h3>
+                    <p class="text-md text-brand-gray mt-2">Participate in the long-term appreciation of a tangible property.</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-shield-halved text-5xl text-brand-mid"></i>
+                    <h3 class="text-2xl font-semibold font-poppins text-brand-dark mt-4">Tax Shelter</h3>
+                    <p class="text-md text-brand-gray mt-2">Use depreciation to shelter taxable income and enhance post-tax returns.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. The Market: Berkeley County Growth -->
+        <section class="bg-brand-light p-12 border-y border-gray-200">
+            <h2 class="text-3xl font-bold font-poppins text-brand-dark text-center">The Berkeley County Growth Story (2010-2023)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center mt-10">
+                <div>
+                    <p class="text-6xl font-bold font-poppins text-brand-dark">31.2%</p>
+                    <h3 class="text-xl font-semibold font-poppins text-brand-gray mt-2">Population Growth</h3>
+                </div>
+                <div>
+                    <p class="text-6xl font-bold font-poppins text-brand-dark">29.0%</p>
+                    <h3 class="text-xl font-semibold font-poppins text-brand-gray mt-2">Labor Force Growth</h3>
+                </div>
+                <div>
+                    <p class="text-6xl font-bold font-poppins text-brand-dark">27.3%</p>
+                    <h3 class="text-xl font-semibold font-poppins text-brand-gray mt-2">Household Growth</h3>
+                </div>
+            </div>
+            <p class="text-center text-lg text-brand-gray mt-10">This growth, combined with stunted housing supply, has led to consistent rent growth, projected to continue.</p>
+        </section>
+
+        <!-- 5. Location & Amenities -->
+        <section class="p-12 grid grid-cols-1 md:grid-cols-2 gap-12">
+            <!-- Location -->
+            <div>
+                <h2 class="text-3xl font-bold font-poppins text-brand-dark">Prime I-81 Location</h2>
+                <ul class="mt-6 space-y-4">
+                    <li class="flex items-center text-lg">
+                        <i class="fas fa-road text-2xl text-brand-mid w-10"></i>
+                        <span><strong>&lt; 2 Mins</strong> to I-81 On-Ramp</span>
+                    </li>
+                    <li class="flex items-center text-lg">
+                        <i class="fas fa-shopping-cart text-2xl text-brand-mid w-10"></i>
+                        <span><strong>&lt; 6 Mins</strong> to Target &amp; Medical Center</span>
+                    </li>
+                    <li class="flex items-center text-lg">
+                        <i class="fas fa-train text-2xl text-brand-mid w-10"></i>
+                        <span><strong>&lt; 10 Mins</strong> to Downtown &amp; MARC Train</span>
+                    </li>
+                    <li class="flex items-center text-lg">
+                        <i class="fas fa-city text-2xl text-brand-mid w-10"></i>
+                        <span><strong>&lt; 90 Mins</strong> to Washington, D.C.</span>
+                    </li>
+                </ul>
+            </div>
+            <!-- Amenities -->
+            <div>
+                <h2 class="text-3xl font-bold font-poppins text-brand-dark">Top-of-Market Amenities</h2>
+                <ul class="mt-6 space-y-3 text-lg columns-2">
+                    <li class="flex items-center"><i class="fas fa-building text-brand-mid w-8"></i>Clubhouse</li>
+                    <li class="flex items-center"><i class="fas fa-dumbbell text-brand-mid w-8"></i>Fitness Room</li>
+                    <li class="flex items-center"><i class="fas fa-spa text-brand-mid w-8"></i>Yoga Room</li>
+                    <li class="flex items-center"><i class="fas fa-swimming-pool text-brand-mid w-8"></i>Outdoor Pool</li>
+                    <li class="flex items-center"><i class="fas fa-fire text-brand-mid w-8"></i>Firepit Area</li>
+                    <li class="flex items-center"><i class="fas fa-users text-brand-mid w-8"></i>Conference Room</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 6. Our Model -->
+        <section class="bg-brand-light p-12 border-y border-gray-200">
+            <h2 class="text-3xl font-bold font-poppins text-brand-dark text-center">Our Vertically-Integrated Model</h2>
+            <p class="text-center text-lg text-brand-gray mt-4 max-w-2xl mx-auto">We control cost, quality, and timelines by managing the entire process.</p>
+            <div class="flex flex-col md:flex-row justify-between space-y-8 md:space-y-0 md:space-x-8 mt-10 max-w-5xl mx-auto">
+                
+                <!-- Stepper Item 1 -->
+                <div class="flex-1 relative stepper-item">
+                    <div class="flex items-center space-x-4">
+                        <div class="stepper-icon flex-shrink-0 w-11 h-11 bg-brand-mid text-white rounded-full flex items-center justify-center">
+                            <i class="fas fa-drafting-compass text-2xl"></i>
                         </div>
-                        <div class="card border border-transparent bg-[var(--forest-light)]/60 p-4 text-sm">
-                            <div class="icon-circle mb-3">AP</div>
-                            <h3 class="text-lg font-semibold mb-1">Meaningful Appreciation</h3>
-                            <p class="text-sm">Direct participation in long-term appreciation of a tangible, income-producing property.</p>
-                        </div>
-                        <div class="card border border-transparent bg-[var(--forest-light)]/60 p-4 text-sm">
-                            <div class="icon-circle mb-3">TX</div>
-                            <h3 class="text-lg font-semibold mb-1">Tax Shelter</h3>
-                            <p class="text-sm">Use depreciation to shelter taxable income and enhance post-tax returns.</p>
+                        <div>
+                            <h3 class="text-2xl font-semibold font-poppins text-brand-dark">Field Development</h3>
+                            <p class="text-brand-gray">Entitlements, Design & PR</p>
                         </div>
                     </div>
                 </div>
-                <div class="hero-image"></div>
-            </div>
-        </section>
 
-        <section class="grid lg:grid-cols-2 gap-8">
-            <div class="card p-8 space-y-4">
-                <h2 class="text-2xl font-bold">The Problem</h2>
-                <p>Taxes, market volatility, and family dynamics can erode the wealth you’ve already built. Many families want:</p>
-                <ul class="list-disc list-inside space-y-2">
-                    <li>Reliable, understandable income for heirs</li>
-                    <li>Capital that’s locked away from day-to-day spending</li>
-                    <li>A real asset that will still be there in 10–20 years</li>
-                </ul>
-            </div>
-            <div class="card p-8 space-y-4">
-                <h2 class="text-2xl font-bold">The Offer</h2>
-                <div class="space-y-3 text-sm leading-relaxed">
-                    <p><strong>What you’re buying:</strong> An equity interest in a single Field Development multifamily project along the I-81 corridor.</p>
-                    <p><strong>Contribution target:</strong> $3–5 million per investor.</p>
-                    <p><strong>Hold period:</strong> 10-year baseline hold, with flexibility to evaluate exit options as the asset matures.</p>
-                    <p><strong>Return profile (levered, target):</strong></p>
-                    <ul class="list-disc list-inside ml-4 space-y-1">
-                        <li>Stabilized cash flow via predictable investor distributions</li>
-                        <li>Residual upside from appreciation at refinance or sale</li>
-                        <li>Depreciation that shelters taxable income along the way</li>
-                    </ul>
-                    <p class="text-xs italic text-neutral-500">Exact numbers, IRR, and sensitivity cases are detailed in the model and extended deck.</p>
+                <!-- Stepper Item 2 -->
+                <div class="flex-1 relative stepper-item">
+                    <div class="flex items-center space-x-4">
+                        <div class="stepper-icon flex-shrink-0 w-11 h-11 bg-brand-mid text-white rounded-full flex items-center justify-center">
+                            <i class="fas fa-hard-hat text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold font-poppins text-brand-dark">Field Construction</h3>
+                            <p class="text-brand-gray">General Contractor</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
 
-        <section class="card p-8 space-y-6">
-            <h2 class="text-2xl font-bold">How This Fixes It</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="space-y-2">
-                    <h3 class="text-lg font-semibold text-[var(--forest-base)]">Locks in discipline</h3>
-                    <p>Capital is committed to a single project—removed from day-to-day family access and short-term trading impulses.</p>
-                </div>
-                <div class="space-y-2">
-                    <h3 class="text-lg font-semibold text-[var(--forest-base)]">Builds post-tax wealth</h3>
-                    <p>Depreciation shelters taxable income, enhancing the value of each dollar of distribution.</p>
-                </div>
-                <div class="space-y-2">
-                    <h3 class="text-lg font-semibold text-[var(--forest-base)]">Creates a visible legacy asset</h3>
-                    <p>Your family owns a real, high-quality building—an enduring, income-producing asset in a growing corridor.</p>
+                <!-- Stepper Item 3 -->
+                <div class="flex-1 relative">
+                    <div class="flex items-center space-x-4">
+                        <div class="stepper-icon flex-shrink-0 w-11 h-11 bg-brand-mid text-white rounded-full flex items-center justify-center">
+                            <i class="fas fa-home text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold font-poppins text-brand-dark">Field Communities</h3>
+                            <p class="text-brand-gray">Long-Term Management</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
-
-        <section class="card p-8 space-y-6">
-            <h2 class="text-2xl font-bold">Simple Terms Snapshot</h2>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-                <div class="bg-[var(--forest-light)]/80 rounded-xl p-5 border border-white">
-                    <h3 class="text-sm font-semibold uppercase tracking-wide text-[var(--forest-base)]">Target contribution</h3>
-                    <p class="mt-2 text-lg font-bold text-[var(--forest-dark)]">$3–5 million</p>
-                    <p>Per investor.</p>
-                </div>
-                <div class="bg-[var(--forest-light)]/80 rounded-xl p-5 border border-white">
-                    <h3 class="text-sm font-semibold uppercase tracking-wide text-[var(--forest-base)]">Structure</h3>
-                    <p class="mt-2 text-lg font-bold text-[var(--forest-dark)]">Direct equity</p>
-                    <p>Single Field Development project.</p>
-                </div>
-                <div class="bg-[var(--forest-light)]/80 rounded-xl p-5 border border-white">
-                    <h3 class="text-sm font-semibold uppercase tracking-wide text-[var(--forest-base)]">Hold</h3>
-                    <p class="mt-2 text-lg font-bold text-[var(--forest-dark)]">10-year baseline</p>
-                    <p>Exit flexibility as the asset matures.</p>
-                </div>
-                <div class="bg-[var(--forest-light)]/80 rounded-xl p-5 border border-white">
-                    <h3 class="text-sm font-semibold uppercase tracking-wide text-[var(--forest-base)]">Distributions</h3>
-                    <p class="mt-2 text-lg font-bold text-[var(--forest-dark)]">Predictable cadence</p>
-                    <p>Set at the project level.</p>
-                </div>
-                <div class="bg-[var(--forest-light)]/80 rounded-xl p-5 border border-white">
-                    <h3 class="text-sm font-semibold uppercase tracking-wide text-[var(--forest-base)]">Tax treatment</h3>
-                    <p class="mt-2 text-lg font-bold text-[var(--forest-dark)]">Depreciation shield</p>
-                    <p>Recapture and exit taxes modeled and planned.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="card p-8 space-y-5">
-            <h2 class="text-2xl font-bold">Advisor-Ready Tax View</h2>
-            <p>We deliver a concise appendix that integrates directly into your planning team’s workflow:</p>
-            <ul class="list-disc list-inside space-y-2">
-                <li>Levered and unlevered cash-on-cash over the 10-year hold</li>
-                <li>Depreciation schedule by year, showing how taxable income is sheltered</li>
-                <li>Exit and recapture assumptions with options for 1031 exchange, timing strategies, and estate overlays</li>
-            </ul>
-        </section>
-
-        <section class="card p-8 space-y-6">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        
+        <!-- 7. Key Projections -->
+        <section class="p-12">
+            <h2 class="text-3xl font-bold font-poppins text-brand-dark text-center">Key Project Assumptions</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center mt-10">
                 <div>
-                    <h2 class="text-2xl font-bold">How this compares to stocks and bonds (post-tax)</h2>
-                    <p class="mt-3 text-sm leading-relaxed max-w-2xl">
-                        This project’s projected post-tax returns are shown alongside a broad U.S. equity index (S&P 500) and 10-year U.S. Treasury bonds. For each, the stacked bars illustrate how much total return is delivered via cash flow versus appreciation. Multifamily offers a different mix: steady, tax-sheltered cash flow plus long-term appreciation from a real, income-producing asset.
-                    </p>
+                    <p class="text-6xl font-bold font-poppins text-brand-dark">18.30%</p>
+                    <h3 class="text-xl font-semibold font-poppins text-brand-gray mt-2">Projected Levered IRR</h3>
                 </div>
-                <div class="chart-placeholder h-48 md:h-56 w-full md:w-72 lg:w-96 grid place-items-center text-sm text-[var(--forest-base)] font-semibold">
-                    Comparison chart placeholder
+                <div>
+                    <p class="text-6xl font-bold font-poppins text-brand-dark">7.15%</p>
+                    <h3 class="text-xl font-semibold font-poppins text-brand-gray mt-2">Untrended Unlevered RoC</h3>
+                </div>
+            </div>
+
+            <!-- 10-Year Return Comparison visual -->
+            <div class="mt-12 bg-slate-100 rounded-2xl p-8">
+                <h3 class="text-xs font-semibold tracking-[0.2em] text-brand-gray text-center uppercase">10-Year Return Comparison*</h3>
+                <p class="text-center text-sm md:text-base text-brand-gray mt-2">Hypothetical growth of a $100,000 investment over a 10-year hold.</p>
+
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Field Investment Property -->
+                    <div class="bg-white rounded-2xl shadow-sm px-6 py-8 text-center">
+                        <p class="text-xs font-semibold tracking-[0.18em] text-brand-mid uppercase">Field Investment Property</p>
+                        <p class="mt-3 text-3xl font-bold font-poppins text-brand-dark">~15% IRR</p>
+                        <p class="mt-2 text-sm text-brand-gray">Approx. 4.0x equity multiple</p>
+                        <p class="mt-3 text-sm font-semibold text-brand-dark">$100,000 → $400,000</p>
+                    </div>
+
+                    <!-- S&P 500 Index -->
+                    <div class="bg-white rounded-2xl shadow-sm px-6 py-8 text-center">
+                        <p class="text-xs font-semibold tracking-[0.18em] text-brand-gray uppercase">S&amp;P 500 Index</p>
+                        <p class="mt-3 text-3xl font-bold font-poppins text-brand-dark">~10% / yr</p>
+                        <p class="mt-2 text-sm text-brand-gray">Approx. 2.6x equity multiple</p>
+                        <p class="mt-3 text-sm font-semibold text-brand-dark">$100,000 → $260,000</p>
+                    </div>
+
+                    <!-- 10-Year U.S. Treasury -->
+                    <div class="bg-white rounded-2xl shadow-sm px-6 py-8 text-center">
+                        <p class="text-xs font-semibold tracking-[0.18em] text-brand-gray uppercase">10-Year U.S. Treasury</p>
+                        <p class="mt-3 text-3xl font-bold font-poppins text-brand-dark">~3.5% / yr</p>
+                        <p class="mt-2 text-sm text-brand-gray">Approx. 1.4x equity multiple</p>
+                        <p class="mt-3 text-sm font-semibold text-brand-dark">$100,000 → $140,000</p>
+                    </div>
+                </div>
+
+                <p class="mt-6 text-[10px] leading-snug text-center text-brand-gray max-w-3xl mx-auto">
+                    *Illustrative comparison only. Field Investment Property returns reflect target net IRR for current multifamily developments and are not a guarantee.
+                    S&amp;P 500 and 10-year Treasury figures are based on long-term historical averages and current yield ranges; actual future performance may be higher or lower.
+                </p>
+            </div>
+
+            <p class="text-center text-sm text-brand-gray mt-8">*Projections are estimates based on assumptions; see disclaimer for details.</p>
+        </section>
+
+        <!-- 7b. Post-Tax Returns vs. Alternatives -->
+        <section class="bg-brand-light p-12 border-y border-gray-200">
+            <h2 class="text-3xl font-bold font-poppins text-brand-dark text-center">Post-Tax Returns vs Traditional Markets</h2>
+            <p class="text-center text-lg text-brand-gray mt-4 max-w-3xl mx-auto">
+                We benchmark Delmar Orchard's projected <span class="font-semibold">after-tax</span> results against two familiar options: an
+                S&amp;P 500 index proxy and 10-year U.S. Treasuries. The comparison separates <span class="font-semibold">cash yield</span>
+                from <span class="font-semibold">price appreciation</span> so you can see exactly how much of your return comes from each.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+                <div class="bg-white shadow-sm rounded-xl p-6 text-center">
+                    <h3 class="text-xl font-poppins font-semibold text-brand-dark">Delmar Orchard</h3>
+                    <p class="text-sm text-brand-gray mt-2">Levered project-level returns, after tax, split into cash distributions and
+                    appreciation at exit.</p>
+                </div>
+                <div class="bg-white shadow-sm rounded-xl p-6 text-center">
+                    <h3 class="text-xl font-poppins font-semibold text-brand-dark">S&amp;P 500 Proxy</h3>
+                    <p class="text-sm text-brand-gray mt-2">Modeled after-tax blend of dividends and price appreciation over 10 years.</p>
+                </div>
+                <div class="bg-white shadow-sm rounded-xl p-6 text-center">
+                    <h3 class="text-xl font-poppins font-semibold text-brand-dark">10-Year Treasury</h3>
+                    <p class="text-sm text-brand-gray mt-2">After-tax coupon income and any change in value over the holding period.</p>
+                </div>
+            </div>
+            <div class="mt-12">
+                <div class="flex flex-col lg:flex-row lg:items-end lg:justify-center gap-10">
+                    <!-- Delmar Orchard Bar -->
+                    <div class="flex flex-col items-center text-center">
+                        <div class="h-72 w-24 bg-white rounded-t-3xl shadow-sm border border-brand-light flex flex-col justify-end overflow-hidden">
+                            <div class="bg-brand-mid" style="height: 50%;"></div>
+                            <div class="bg-brand-dark/90" style="height: 50%;"></div>
+                        </div>
+                        <p class="mt-4 text-lg font-semibold text-brand-dark">Delmar Orchard</p>
+                        <p class="text-sm text-brand-gray">After-tax total return: <span class="font-semibold text-brand-dark">2.4x equity</span></p>
+                        <p class="text-xs text-brand-gray">Cash flow 1.2x · Appreciation 1.2x</p>
+                    </div>
+                    <!-- S&P 500 Bar -->
+                    <div class="flex flex-col items-center text-center">
+                        <div class="h-72 w-24 bg-white rounded-t-3xl shadow-sm border border-brand-light flex flex-col justify-end overflow-hidden">
+                            <div class="bg-brand-mid" style="height: 14.5%;"></div>
+                            <div class="bg-brand-dark/90" style="height: 54%;"></div>
+                        </div>
+                        <p class="mt-4 text-lg font-semibold text-brand-dark">S&amp;P 500 Proxy</p>
+                        <p class="text-sm text-brand-gray">After-tax total return: <span class="font-semibold text-brand-dark">1.65x equity</span></p>
+                        <p class="text-xs text-brand-gray">Cash flow 0.35x · Appreciation 1.30x</p>
+                    </div>
+                    <!-- Treasury Bar -->
+                    <div class="flex flex-col items-center text-center">
+                        <div class="h-72 w-24 bg-white rounded-t-3xl shadow-sm border border-brand-light flex flex-col justify-end overflow-hidden">
+                            <div class="bg-brand-mid" style="height: 48%;"></div>
+                            <div class="bg-brand-dark/90" style="height: 2%;"></div>
+                        </div>
+                        <p class="mt-4 text-lg font-semibold text-brand-dark">10-Year Treasury</p>
+                        <p class="text-sm text-brand-gray">After-tax total return: <span class="font-semibold text-brand-dark">1.20x equity</span></p>
+                        <p class="text-xs text-brand-gray">Cash flow 1.15x · Appreciation 0.05x</p>
+                    </div>
+                </div>
+                <div class="mt-6 flex items-center justify-center gap-8 text-sm text-brand-gray">
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 h-4 rounded-sm bg-brand-mid"></span>
+                        <span>After-tax cash flow</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 h-4 rounded-sm bg-brand-dark/90"></span>
+                        <span>After-tax appreciation</span>
+                    </div>
+                </div>
+                <p class="mt-4 text-center text-xs text-brand-gray max-w-3xl mx-auto">
+                    Bars scaled to Delmar Orchard's modeled 2.4x after-tax equity multiple over 10 years.
+                    Detailed modeling available in the supporting appendix.
+                </p>
+            </div>
+            <p class="text-center text-xs text-brand-gray mt-6 max-w-3xl mx-auto">
+                This page summarizes the framework. A detailed appendix and Excel workbook break out year-by-year assumptions,
+                tax impacts, and after-tax cash flows for you and your advisory team.
+            </p>
+        </section>
+
+        <!-- 8. Proven Track Record -->
+        <section class="bg-white p-12 border-y border-gray-200">
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold font-poppins text-brand-dark">Proven Track Record</h2>
+                    <h4 class="text-xl font-semibold font-poppins text-brand-gray mt-4">Latest Project: Susquehanna Trail</h4>
+                    <p class="text-lg text-brand-gray mt-4">Our model is proven. We are currently in lease-up at Susquehanna Trail Apartments in York, PA, a 240-unit project with a comparable design and amenity package.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+    <img src="https://lirp.cdn-website.com/a798f3ab/dms3rep/multi/opt/Susquehanna+Trails_Kitchen_3239+%281%29-1920w.png" alt="Susquehanna Trail - Staged Kitchen" class="rounded-lg shadow-md w-full h-40 object-cover">
+    <img src="https://lirp.cdn-website.com/a798f3ab/dms3rep/multi/opt/Susquehanna+Trails_Living+Room_3275+%281%29-1920w.png" alt="Susquehanna Trail - Staged Living Room" class="rounded-lg shadow-md w-full h-40 object-cover">
+    <img src="https://lirp.cdn-website.com/a798f3ab/dms3rep/multi/opt/Susquehanna+Trails_Bedroom+%281%29-1920w.png" alt="Susquehanna Trail - Staged Bedroom" class="rounded-lg shadow-md w-full h-40 object-cover">
+    <img src="https://lirp.cdn-website.com/a798f3ab/dms3rep/multi/opt/Community+Building+Kitchen+Cathy+Kohler-1920w.jpg" alt="Susquehanna Trail - Community Building Interior" class="rounded-lg shadow-md w-full h-40 object-cover">
+</div>
+             </div>
+        </section>
+
+        <!-- 9. Next Steps -->
+        <section class="p-12">
+            <h2 class="text-3xl font-bold font-poppins text-brand-dark text-center">Your Next Steps</h2>
+            <div class="max-w-xl mx-auto mt-10 space-y-8">
+                <div class="flex items-start space-x-6">
+                    <div class="flex-shrink-0 w-12 h-12 bg-brand-mid text-white text-2xl font-bold font-poppins rounded-full flex items-center justify-center">1</div>
+                    <div>
+                        <h4 class="text-2xl font-semibold font-poppins text-brand-dark">Intro Call</h4>
+                        <p class="text-lg text-brand-gray">Meet with Field Development to review the project, structure, and fit with your family's goals.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-6">
+                    <div class="flex-shrink-0 w-12 h-12 bg-brand-mid text-white text-2xl font-bold font-poppins rounded-full flex items-center justify-center">2</div>
+                    <div>
+                        <h4 class="text-2xl font-semibold font-poppins text-brand-dark">Share with Advisor</h4>
+                        <p class="text-lg text-brand-gray">We provide a concise tax and returns appendix for your planning and advisory team.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-6">
+                    <div class="flex-shrink-0 w-12 h-12 bg-brand-mid text-white text-2xl font-bold font-poppins rounded-full flex items-center justify-center">3</div>
+                    <div>
+                        <h4 class="text-2xl font-semibold font-poppins text-brand-dark">Advisor Review & Q&A</h4>
+                        <p class="text-lg text-brand-gray">Your advisor reviews the assumptions, post-tax returns, and fit within your broader plan.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="card p-8 space-y-5">
-            <h2 class="text-2xl font-bold">Next Steps</h2>
-            <ol class="space-y-4 list-decimal list-inside">
-                <li><strong>30-minute intro call.</strong> Meet with Field Development to review the project, structure, and fit with your family’s goals.</li>
-                <li><strong>Share with spouse & advisor.</strong> We provide this one-pager and a concise tax/returns appendix for your advisory team.</li>
-                <li><strong>Advisor review and Q&amp;A.</strong> Your advisor reviews the assumptions, post-tax returns, and alignment with your broader plan.</li>
-            </ol>
-        </section>
-
-        <section class="card p-8 space-y-3">
-            <h2 class="text-2xl font-bold">Contact</h2>
-            <p class="text-lg font-semibold text-[var(--forest-dark)]">Hugh Simpson</p>
-            <p>Field Development, LLC</p>
-            <p><a href="https://fielddevelopment.com" class="text-[var(--forest-base)] font-semibold underline">fielddevelopment.com</a></p>
-        </section>
-
-        <footer class="text-center text-xs text-neutral-500 pt-8">
-            © Field Development, LLC · Confidential investor material
+        <!-- 10. Contact Footer -->
+        <footer class="bg-brand-dark text-white p-12 text-center">
+            <div class="flex justify-center mb-6">
+                <img src="fp-logo-webWhite.png" alt="Field Properties Logo" class="h-10 w-auto">
+            </div>
+            <h3 class="text-3xl font-poppins font-semibold">Contact Us</h3>
+            <p class="text-xl text-gray-300 mt-4">Hugh Simpson</p>
+            <p class="text-lg text-gray-300 mt-2">Field Development, LLC | fielddevelopment.com</p>
         </footer>
+
     </div>
+
 </body>
 </html>
