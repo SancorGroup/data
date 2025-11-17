@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Providence Parcel: Strategic Financial Roadmap</title>
+    <title>Field Development: I-81 Corridor Growth Strategy</title>
+    <!-- Chosen Palette: Warm Neutrals (Stone/Gray) with Teal Accent -->
+    <!-- Application Structure Plan: A single-page narrative dashboard. The structure flows from the high-level 'Why' (Overview) to an interactive 'Where' (Market Explorer), then the 'What' (Project Pipeline), and finally the 'How' (Fund Strategy). The core is the 'Market Explorer,' which uses JS-driven buttons to dynamically update charts and data cards for each of the three geographic tiers. This consolidates data from multiple slides (3, 7, 10) into one interactive view, allowing investors to directly compare the tiers instead of flipping between static tables. This task-oriented (exploration) design is more usable than a linear report. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info (Slide 2, 3, 7, 10): Geographic Tiers & Market/Demo Data. Goal: Compare tiers. Viz/Method: A button-driven 'Market Explorer' section. Interaction: Clicking a tier button (e.g., 'Central Tier') triggers a JS function. This function updates: 1) An HTML card with the tier's strengths/cities (from Slide 3). 2) A Chart.js Bar Chart ('marketChart') with rent/occupancy data for that tier's cities (from Slide 7). 3) A Chart.js Radar Chart ('demographicChart') with demographic data for that tier (from Slide 10). Justification: This interaction is the core of the app, directly linking geography, market fundamentals, and demographics for easy comparison. Library: Chart.js (Bar, Radar).
+        - Report Info (Slide 4): Economic Drivers. Goal: Inform. Viz/Method: Styled HTML cards (Grid layout) with Unicode icons. Interaction: None (static info). Justification: Simple, clear, and visually appealing.
+        - Report Info (Slide 5, 6, 8, 9): Tables (Projects, Funds, EDCs, Connectivity). Goal: Inform/Organize. Viz/Method: Styled HTML tables and cards with Tailwind. Interaction: None (static info). Justification: Tables and lists are the clearest way to present this structured data.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         }
         .chart-container {
             position: relative;
@@ -20,582 +24,528 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            height: 320px;
+            height: 350px;
             max-height: 400px;
         }
-        @media (min-width: 768px) {
+        @media (max-width: 640px) {
             .chart-container {
-                height: 384px;
+                height: 300px;
+                max-height: 350px;
             }
         }
-        .kpi-value {
-            font-weight: 900;
-            color: #00488d;
+        .nav-button {
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
-        .card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            padding: 1.5rem;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        .nav-button.active {
+            background-color: #0d9488;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        .nav-link {
+            transition: color 0.3s ease;
+            white-space: nowrap;
         }
-        .flow-arrow {
-            font-size: 2rem;
-            color: #66a3e0;
-            line-height: 1;
+        .nav-link:hover {
+            color: #0d9488;
         }
-        .icon-symbol {
-            font-size: 3rem;
-            line-height: 1;
-            color: #0066cc;
+        th, td {
+            text-align: left;
+            padding: 12px 16px;
         }
-        .timeline-item {
-            position: relative;
-            padding-left: 2rem;
+        thead th {
+            background-color: #f3f4f6;
+            font-weight: 600;
         }
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.5rem;
-            width: 1.5rem;
-            height: 1.5rem;
-            background-color: #00488d;
-            border-radius: 50%;
-            border: 2px solid #99c2e9;
-        }
-        .timeline-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            left: 0.7rem;
-            top: 2rem;
-            height: calc(100% - 2rem);
-            width: 2px;
-            background-color: #00488d;
+        tbody tr:nth-child(even) {
+            background-color: #f9fafb;
         }
     </style>
 </head>
-<body class="text-gray-700">
+<body class="bg-stone-50 text-gray-800 antialiased">
 
-    <div class="container mx-auto p-4 md:p-8">
+    <header class="bg-white shadow-md py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-3xl md:text-5xl font-bold text-teal-800">
+                Field Development: The I-81 Corridor Growth Strategy
+            </h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                A Vision for Scalable Multifamily Investment in the Mid-Atlantic Growth Spine
+            </p>
+        </div>
+    </header>
 
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-black text-gray-800">Providence Parcel: Strategic Roadmap</h1>
-            <p class="text-xl md:text-2xl text-[#00488d] font-semibold mt-2">A Detailed Financial Analysis and Implementation Plan</p>
-        </header>
+    <nav class="sticky top-0 bg-white shadow-lg z-10">
+        <div class="container mx-auto px-6 py-3 flex justify-center items-center space-x-4 md:space-x-8 overflow-x-auto">
+            <a href="#overview" class="nav-link text-sm md:text-base font-medium text-gray-600 py-2 px-3">Overview</a>
+            <a href="#market-explorer" class="nav-link text-sm md:text-base font-medium text-gray-600 py-2 px-3">Market Explorer</a>
+            <a href="#pipeline" class="nav-link text-sm md:text-base font-medium text-gray-600 py-2 px-3">Pipeline &amp; Enablers</a>
+            <a href="#strategy" class="nav-link text-sm md:text-base font-medium text-gray-600 py-2 px-3">Fund Strategy</a>
+        </div>
+    </nav>
 
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <main class="container mx-auto px-6 py-12">
 
-            <section id="financial-analysis" class="lg:col-span-3 card">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Financial Analysis Deep Dive: Why Ownership is the Best Path</h2>
-                <p class="mb-6">The analysis confirms that Scenario 1, direct acquisition and self-development, offers the most significant long-term financial benefits for L&W Supply. This approach is a classic value-add development play that maximizes control and asset appreciation, providing a solid, predictable return profile.</p>
+        <section id="overview" class="mb-16">
+            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">The I-81 "Affordability Arc": An Overview</h2>
+            <p class="text-lg text-gray-700 mb-12 max-w-3xl mx-auto text-center">
+                The I-81 spine is the next-generation affordable housing arc, positioned between major metros with strong economic momentum and high livability. This section outlines the core economic and demographic forces driving our strategy, fueled by urban outflow, remote work relocation, and a diverse industrial base.
+            </p>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="card p-4">
-                        <h3 class="text-xl font-bold text-[#0066cc] mb-2">Compelling Returns</h3>
-                        <p class="text-sm text-gray-600">Projected <strong><span id="baseIrrDisplay">12.0%</span> IRR</strong> and an approximate <strong><span id="equityMultipleDisplay">2.00x</span> equity multiple</strong> over a 10-year horizon underscore the long-term wealth creation opportunity.</p>
-                    </div>
-                    <div class="card p-4">
-                        <h3 class="text-xl font-bold text-[#0066cc] mb-2">Risk Management</h3>
-                        <p class="text-sm text-gray-600">Even with a <strong><span id="costEscalationDisplay">10.0%</span> cost overrun</strong>, modeled returns compress only to <strong><span id="stressIrrDisplay">10.8%</span> IRR</strong>, highlighting resilience reinforced by a guaranteed maximum price (GMP) strategy.</p>
-                    </div>
-                    <div class="card p-4">
-                        <h3 class="text-xl font-bold text-[#0066cc] mb-2">Strategic Control</h3>
-                        <p class="text-sm text-gray-600">Ownership allows L&amp;W Supply to tailor the facility, capture full appreciation, and capitalize on upside scenarios such as <strong><span id="rentLiftDisplay">+$1.00/SF</span> rent lifts</strong> or <strong><span id="capRateDisplay">5.25%</span> exit cap rates</strong>.</p>
-                    </div>
+            <h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Core Economic &amp; Demographic Drivers</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-teal-600">
+                    <span class="text-4xl" role="img" aria-label="Hospital">🏥</span>
+                    <h4 class="text-lg font-semibold mt-2">Healthcare</h4>
                 </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-teal-600">
+                    <span class="text-4xl" role="img" aria-label="Truck">🚚</span>
+                    <h4 class="text-lg font-semibold mt-2">Logistics</h4>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-teal-600">
+                    <span class="text-4xl" role="img" aria-label="Factory">🏭</span>
+                    <h4 class="text-lg font-semibold mt-2">Adv. Manufacturing</h4>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-teal-600">
+                    <span class="text-4xl" role="img" aria-label="Graduation Cap">🎓</span>
+                    <h4 class="text-lg font-semibold mt-2">Education</h4>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-teal-600">
+                    <span class="text-4xl" role="img" aria-label="Mountain">⛰️</span>
+                    <h4 class="text-lg font-semibold mt-2">Tourism</h4>
+                </div>
+            </div>
+            <p class="text-center text-gray-600 mt-6 max-w-2xl mx-auto">
+                Fueled by urban outflow from DC, Baltimore, and Philadelphia, alongside a growing remote workforce and expanding Hispanic and young professional populations.
+            </p>
+        </section>
 
-                <div class="mt-8 grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
-                    <div class="card bg-[#f8fbff] border border-[#c9def4]">
-                        <h3 class="text-lg font-semibold text-gray-800">Interactive Sensitivity Lab</h3>
-                        <p class="text-sm text-gray-600 mb-4">Adjust underwriting assumptions to see how Scenario 1 performs across a range of outcomes.</p>
-                        <div class="space-y-6">
-                            <div>
-                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                    <label for="baseIrrInput">Base Case IRR</label>
-                                    <span id="baseIrrOutput" class="text-[#00488d]">12.0%</span>
-                                </div>
-                                <input id="baseIrrInput" type="range" min="8" max="18" step="0.1" value="12" class="mt-2 w-full accent-[#0066cc]">
-                            </div>
-                            <div>
-                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                    <label for="rentLiftInput">Rent Lift (+$/SF)</label>
-                                    <span id="rentLiftOutput" class="text-[#00488d]">+$1.00</span>
-                                </div>
-                                <input id="rentLiftInput" type="range" min="0" max="3" step="0.25" value="1" data-sensitivity="1.8" class="mt-2 w-full accent-[#0066cc]">
-                            </div>
-                            <div>
-                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                    <label for="exitCapInput">Exit Cap Rate</label>
-                                    <span id="exitCapOutput" class="text-[#00488d]">5.25%</span>
-                                </div>
-                                <input id="exitCapInput" type="range" min="4.75" max="7" step="0.05" value="5.25" data-base-cap="5.75" data-sensitivity="4.2" class="mt-2 w-full accent-[#0066cc]">
-                            </div>
-                            <div>
-                                <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                    <label for="costEscalationInput">Cost Escalation</label>
-                                    <span id="costEscalationOutput" class="text-[#00488d]">10.0%</span>
-                                </div>
-                                <input id="costEscalationInput" type="range" min="-5" max="20" step="0.5" value="10" data-sensitivity="0.12" class="mt-2 w-full accent-[#0066cc]">
-                                <p class="mt-2 text-xs text-gray-500">Negative values indicate cost savings relative to underwriting.</p>
-                            </div>
-                        </div>
-                    </div>
+        <section id="market-explorer" class="mb-16">
+            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Interactive Market Explorer</h2>
+            <p class="text-lg text-gray-700 mb-8 max-w-3xl mx-auto text-center">
+                The corridor is segmented into three strategic tiers. Select a tier to explore its unique strengths, representative cities, market-specific data, and demographic profile. This allows for a direct comparison of the investment landscape across the corridor.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button class="nav-button py-2 px-5 rounded-full font-medium bg-white text-teal-700 border border-gray-300 shadow-sm hover:bg-teal-50" data-tier="northern">Northern Tier (PA)</button>
+                <button class="nav-button py-2 px-5 rounded-full font-medium bg-white text-teal-700 border border-gray-300 shadow-sm hover:bg-teal-50" data-tier="central">Central Tier (PA-MD-WV)</button>
+                <button class="nav-button py-2 px-5 rounded-full font-medium bg-white text-teal-700 border border-gray-300 shadow-sm hover:bg-teal-50" data-tier="southern">Southern Tier (VA)</button>
+            </div>
+
+            <div id="tier-content" class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div id="tier-snapshot" class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 id="tier-title" class="text-2xl font-bold text-teal-700 mb-4"></h3>
                     <div class="space-y-4">
-                        <h3 class="text-lg font-semibold text-gray-800 text-center">IRR Sensitivity to Market Variables</h3>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Representative Cities</h4>
+                            <p id="tier-cities" class="text-lg text-gray-800"></p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Strategic Strengths</h4>
+                            <p id="tier-strengths" class="text-lg text-gray-800"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4 text-center">Market Economics Snapshot</h4>
                         <div class="chart-container">
-                            <canvas id="irrSensitivityChart"></canvas>
+                            <canvas id="marketChart"></canvas>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="card border border-[#e5effb] bg-[#f9fbff]">
-                                <h4 class="text-sm font-semibold text-gray-700">Base Case Outcome</h4>
-                                <p class="mt-1 text-xl font-black text-[#00488d]" id="baseIrrResult">12.0%</p>
-                                <p class="text-xs text-gray-500">Modeled IRR before upside or stress scenarios.</p>
-                            </div>
-                            <div class="card border border-[#e5effb] bg-[#f9fbff]">
-                                <h4 class="text-sm font-semibold text-gray-700">Upside Potential</h4>
-                                <p class="mt-1 text-xl font-black text-[#0066cc]" id="upsideIrrResult">13.8%</p>
-                                <p class="text-xs text-gray-500">Best lift from rent growth or cap compression.</p>
-                            </div>
-                            <div class="card border border-[#ffe6d4] bg-[#fff7f0]">
-                                <h4 class="text-sm font-semibold text-gray-700">Cost Stress Test</h4>
-                                <p class="mt-1 text-xl font-black text-[#d97706]" id="stressIrrResultCard">10.8%</p>
-                                <p class="text-xs text-gray-500">IRR impact at the modeled escalation level.</p>
-                            </div>
-                            <div class="card border border-[#d9f4e3] bg-[#f3fcf7]">
-                                <h4 class="text-sm font-semibold text-gray-700">Equity Multiple</h4>
-                                <p class="mt-1 text-xl font-black text-[#047857]" id="equityMultipleResult">2.00x</p>
-                                <p class="text-xs text-gray-500">Approximate equity multiple over ten years.</p>
-                            </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4 text-center">Demographic Profile</h4>
+                        <div class="chart-container" style="height: 400px; max-height: 450px;">
+                            <canvas id="demographicChart"></canvas>
                         </div>
-                        <p class="text-center text-sm text-gray-600">The project's IRR is highly responsive to favorable rent growth and exit cap rate compression, while demonstrating measured resilience against construction cost escalation.</p>
                     </div>
                 </div>
-            </section>
+            </div>
+            <p id="chart-alert" class="hidden mt-4 text-center text-sm text-red-600" role="status">
+                Interactive charts require JavaScript and access to the Chart.js CDN. Please ensure both are available to view the full experience.
+            </p>
+        </section>
 
-            <section id="roadmap" class="lg:col-span-3 card">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Strategic Roadmap: L&W Supply Direct Acquisition</h2>
-                <p class="mb-6">This phased plan outlines the specific actions and timelines for L&W Supply to execute the direct acquisition and immediate development, ensuring a seamless transition and maximum value capture.</p>
+        <section id="pipeline" class="mb-16">
+            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Project Pipeline &amp; Strategic Enablers</h2>
+            <p class="text-lg text-gray-700 mb-12 max-w-3xl mx-auto text-center">
+                Our strategy is supported by an active project pipeline and a robust network of local partners. These elements, combined with the corridor's connectivity, create a development-friendly environment ready for scalable investment.
+            </p>
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Active &amp; Upcoming Projects</h3>
+            <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Location</th>
+                            <th>Units</th>
+                            <th>Phase</th>
+                            <th>Key Advantage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Susquehanna Trail</strong></td>
+                            <td>York, PA</td>
+                            <td>250</td>
+                            <td>Under Construction</td>
+                            <td>Logistics &amp; affordability play</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Del Mar Orchard Apts</strong></td>
+                            <td>Martinsburg, WV</td>
+                            <td>250</td>
+                            <td>Breaking Ground</td>
+                            <td>DC commuter base, strong rents</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pipeline 2027–2030</strong></td>
+                            <td>Lancaster, Hagerstown, Harrisonburg</td>
+                            <td>180–250 each</td>
+                            <td>Yield &gt;6%, scalable rollout</td>
+                            <td>High-yield development anchors</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                    <div>
-                        <div class="timeline-item">
-                            <h3 class="font-bold text-[#0066cc]">Phase 1: Immediate Action (0-3 Months)</h3>
-                            <ul class="list-disc list-inside mt-2 text-sm text-gray-600">
-                                <li>Secure the land with a Purchase and Sale Agreement.</li>
-                                <li>Engage project team (Architect, Engineer, General Contractor, Environmental Consultant).</li>
-                                <li>Initiate talks with lenders to lock in **6% fixed-rate financing** at a **70% loan-to-cost**.</li>
-                            </ul>
-                        </div>
-                        <div class="timeline-item mt-8">
-                            <h3 class="font-bold text-[#0066cc]">Phase 2: Entitlement & Permitting (3-9 Months)</h3>
-                             <ul class="list-disc list-inside mt-2 text-sm text-gray-600">
-                                <li>Submit final plans for zoning and site plan review.</li>
-                                <li>Obtain all necessary building permits.</li>
-                                <li>Proactively engage with local officials to streamline the process.</li>
-                                <li>Coordinate with utility providers for tie-ins.</li>
-                            </ul>
-                        </div>
-                        <div class="timeline-item mt-8">
-                            <h3 class="font-bold text-[#0066cc]">Phase 3: Construction & Occupancy (9-20 Months)</h3>
-                            <ul class="list-disc list-inside mt-2 text-sm text-gray-600">
-                                <li>Break ground and begin construction under a GMP contract.</li>
-                                <li>Implement a project management system for progress tracking.</li>
-                                <li>Complete final inspections for the certificate of occupancy.</li>
-                                <li>Begin interior build-out and occupy the new facility.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="space-y-6">
-                        <div class="card bg-[#f9fbff] border border-[#d5e5fa]">
-                            <h3 class="text-lg font-semibold text-gray-800">Adjust Project Cost Assumptions</h3>
-                            <p class="text-sm text-gray-600 mb-4">Use sliders or direct entry (in millions) to tailor the development budget to current market intelligence.</p>
-                            <div class="space-y-5">
-                                <div>
-                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                        <label for="landCostValue">Land Valuation</label>
-                                        <span data-label-for="landCostValue" class="text-[#00488d]">$1.23M</span>
-                                    </div>
-                                    <input id="landCostRange" type="range" min="0.8" max="2" step="0.025" value="1.225" data-target="landCostValue" class="mt-2 w-full accent-[#0066cc]">
-                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
-                                        <input id="landCostValue" type="number" min="0.8" max="2" step="0.025" value="1.225" data-target="landCostRange" data-cost-input data-label="Land Valuation" class="w-20 rounded border border-gray-300 px-2 py-1 text-xs">
-                                        <span data-share-for="landCostValue">22.7% of total</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                        <label for="hardCostValue">Construction Hard Costs</label>
-                                        <span data-label-for="hardCostValue" class="text-[#00488d]">$3.50M</span>
-                                    </div>
-                                    <input id="hardCostRange" type="range" min="2.5" max="5" step="0.05" value="3.5" data-target="hardCostValue" class="mt-2 w-full accent-[#0066cc]">
-                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
-                                        <input id="hardCostValue" type="number" min="2.5" max="5" step="0.05" value="3.5" data-target="hardCostRange" data-cost-input data-label="Construction Hard Costs" class="w-24 rounded border border-gray-300 px-2 py-1 text-xs">
-                                        <span data-share-for="hardCostValue">64.8% of total</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                        <label for="softCostValue">Ancillary Soft Costs</label>
-                                        <span data-label-for="softCostValue" class="text-[#00488d]">$0.50M</span>
-                                    </div>
-                                    <input id="softCostRange" type="range" min="0.2" max="1" step="0.025" value="0.5" data-target="softCostValue" class="mt-2 w-full accent-[#0066cc]">
-                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
-                                        <input id="softCostValue" type="number" min="0.2" max="1" step="0.025" value="0.5" data-target="softCostRange" data-cost-input data-label="Ancillary Soft Costs" class="w-24 rounded border border-gray-300 px-2 py-1 text-xs">
-                                        <span data-share-for="softCostValue">9.3% of total</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex items-center justify-between text-sm font-semibold text-gray-700">
-                                        <label for="contingencyValue">Contingency</label>
-                                        <span data-label-for="contingencyValue" class="text-[#00488d]">$0.18M</span>
-                                    </div>
-                                    <input id="contingencyRange" type="range" min="0" max="0.5" step="0.01" value="0.175" data-target="contingencyValue" class="mt-2 w-full accent-[#0066cc]">
-                                    <div class="mt-2 flex items-center gap-2 text-xs text-gray-500">
-                                        <input id="contingencyValue" type="number" min="0" max="0.5" step="0.01" value="0.175" data-target="contingencyRange" data-cost-input data-label="Contingency" class="w-20 rounded border border-gray-300 px-2 py-1 text-xs">
-                                        <span data-share-for="contingencyValue">3.2% of total</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between text-sm font-semibold text-gray-700 border-t border-[#dbe7f9] pt-4 mt-4">
-                                <span>Total Project Budget</span>
-                                <span id="totalProjectBudget" class="text-[#0b5394]">$5.40M</span>
-                            </div>
-                        </div>
-                        <div class="chart-container h-80 md:h-96">
-                            <canvas id="costBreakdownChart"></canvas>
-                        </div>
-                        <p class="text-center text-sm text-gray-600">The majority of the budget is allocated to <strong><span id="dominantCostCategory">Construction Hard Costs</span></strong>, currently representing <strong><span id="dominantCostShare">64.8%</span></strong> of projected spend.</p>
-                    </div>
+            <div class="grid md:grid-cols-2 gap-8 mt-12">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Connectivity Advantage</h3>
+                    <p class="text-center text-gray-600 mb-4">Access to major metros without the metropolitan cost burden.</p>
+                    <ul class="space-y-2 text-lg">
+                        <li class="flex justify-between"><span>Charlestown → Winchester:</span> <strong>50 / 35 min</strong> (Peak/Off-Peak)</li>
+                        <li class="flex justify-between"><span>Charlestown → Frederick:</span> <strong>65 / 45 min</strong></li>
+                        <li class="flex justify-between"><span>Winchester → DC:</span> <strong>120 / 90 min</strong></li>
+                    </ul>
                 </div>
-            </section>
-
-            <section id="synthesis" class="lg:col-span-3">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Strategic Synthesis: Unlocking Long-Term Value</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="card text-center">
-                        <div class="icon-symbol">👑</div>
-                        <h3 class="text-xl font-bold my-3 text-gray-800">For Maximum Control</h3>
-                        <p class="text-gray-600">Scenario 1 offers the most robust long-term outcome, full operational control, and captures all asset appreciation despite higher capital demands.</p>
-                    </div>
-                    <div class="card text-center">
-                         <div class="icon-symbol">🛡️</div>
-                        <h3 class="text-xl font-bold my-3 text-gray-800">For Capital Preservation</h3>
-                        <p class="text-gray-600">Scenario 2 provides complete risk insulation and requires zero equity, but perpetuates rental obligations without any wealth creation.</p>
-                    </div>
-                    <div class="card text-center">
-                         <div class="icon-symbol">⚖️</div>
-                        <h3 class="text-xl font-bold my-3 text-gray-800">For Negotiated Optionality</h3>
-                        <p class="text-gray-600">Scenario 3 affords a strategic hedge, granting interim occupancy with an embedded, attractively priced path to future ownership.</p>
-                    </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Economic Development Network</h3>
+                    <p class="text-center text-gray-600 mb-4">Strong partnerships for incentive alignment and fast-track approvals.</p>
+                    <ul class="space-y-2 text-lg">
+                        <li><strong>Lancaster–York–Harrisburg:</strong> CREDC &amp; Chambers</li>
+                        <li><strong>Hagerstown–Martinsburg:</strong> Washington County EDC</li>
+                        <li><strong>Winchester–Staunton:</strong> Shenandoah Valley Partnership</li>
+                    </ul>
                 </div>
-            </section>
+            </div>
+        </section>
 
-        </main>
-        
-        <footer class="text-center mt-12 py-4 border-t border-gray-300">
-            <p class="text-sm text-gray-500">Providence Parcel Financial Framework | Confidential Analysis</p>
-        </footer>
+        <section id="strategy" class="mb-16">
+            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Fund Strategy &amp; Key Takeaways</h2>
+            <p class="text-lg text-gray-700 mb-12 max-w-3xl mx-auto text-center">
+                Our institutional fund structure is designed for scalable capital deployment, aligning with specific market opportunities and providing flexibility for investors. This approach is underpinned by strong market fundamentals and development-friendly local governments.
+            </p>
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Institutional Fund Design</h3>
+            <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th>Fund</th>
+                            <th>Term</th>
+                            <th>Capital</th>
+                            <th>Target IRR</th>
+                            <th>Focus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Fund I</strong></td>
+                            <td>5 yrs</td>
+                            <td>$125M</td>
+                            <td>15%+</td>
+                            <td>Fast-turn, early projects</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fund II</strong></td>
+                            <td>7 yrs</td>
+                            <td>$125M</td>
+                            <td>14%</td>
+                            <td>Core PA growth markets</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fund III</strong></td>
+                            <td>10 yrs</td>
+                            <td>$125M</td>
+                            <td>13%</td>
+                            <td>Southern expansion</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fund IV</strong></td>
+                            <td>15 yrs</td>
+                            <td>$125M</td>
+                            <td>12%</td>
+                            <td>Long-hold income fund</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-    </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg mt-12">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Strategic Takeaways</h3>
+                <ul class="space-y-3 text-lg text-gray-700 max-w-2xl mx-auto list-disc list-outside pl-5">
+                    <li>I-81 is an emerging <strong>residential growth spine</strong> driven by affordability and job access.</li>
+                    <li><strong>Class A multifamily</strong> demand is strong, with low vacancy rates across all nodes.</li>
+                    <li><strong>Local governments and EDCs</strong> are development-friendly, offering incentives.</li>
+                    <li>The <strong>fund structure</strong> aligns with scalable capital deployment and investor flexibility.</li>
+                    <li><strong>Lancaster, Hagerstown, Harrisonburg</strong> are the next high-yield development anchors.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const brilliantBlues = {
-        darkBlue: '#00488d',
-        mediumBlue: '#0066cc',
-        lightBlue: '#3385d6',
-        lighterBlue: '#66a3e0',
-        paleBlue: '#99c2e9',
-        fontColor: '#4b5563'
-    };
+    <footer class="bg-gray-800 text-white py-10 mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-lg font-semibold">
+                Field Development: Building the backbone of modern multifamily living along America’s I-81 Growth Corridor.
+            </p>
+        </div>
+    </footer>
 
-    const globalChartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                labels: {
-                    color: brilliantBlues.fontColor,
-                    boxWidth: 15,
-                    padding: 15
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tierData = {
+                northern: {
+                    title: "Northern Tier (PA)",
+                    cities: "Scranton, Lehigh Valley, Lancaster, York",
+                    strengths: "Economic diversity, in-migration, strong industrial base."
+                },
+                central: {
+                    title: "Central Tier (PA–MD–WV)",
+                    cities: "Harrisburg, Hagerstown, Martinsburg, Winchester",
+                    strengths: "Logistics corridor, low land costs, robust commuter growth."
+                },
+                southern: {
+                    title: "Southern Tier (VA)",
+                    cities: "Harrisonburg, Staunton, Roanoke, Lynchburg",
+                    strengths: "Education anchors, high affordability, supportive EDCs."
                 }
-            },
-            tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                titleFont: { size: 14, weight: 'bold' },
-                bodyFont: { size: 12 },
-                padding: 10,
-                cornerRadius: 4,
-                callbacks: {
-                    title: function (tooltipItems) {
-                        const item = tooltipItems[0];
-                        const label = item.chart.data.labels[item.dataIndex];
-                        return Array.isArray(label) ? label.join(' ') : label;
-                    }
+            };
+
+            const marketData = {
+                northern: {
+                    labels: ['Lancaster, PA'],
+                    rent1BR: [1650],
+                    rent2BR: [2000],
+                    occupancy: [96]
+                },
+                central: {
+                    labels: ['Martinsburg, WV', 'Winchester, VA'],
+                    rent1BR: [1400, 1550],
+                    rent2BR: [1750, 1950],
+                    occupancy: [95, 94]
+                },
+                southern: {
+                    labels: ['Harrisonburg, VA'],
+                    rent1BR: [1450],
+                    rent2BR: [1850],
+                    occupancy: [96]
                 }
-            }
-        },
-        scales: {
-            x: {
-                ticks: { color: brilliantBlues.fontColor },
-                grid: { display: false }
-            },
-            y: {
-                ticks: { color: brilliantBlues.fontColor },
-                grid: { color: '#e5e7eb' }
-            }
-        }
-    };
+            };
 
-    const formatLabel = (str, maxLen = 16) => {
-        if (str.length <= maxLen) return str;
-        const words = str.split(' ');
-        const lines = [];
-        let currentLine = '';
-        words.forEach((word) => {
-            if ((currentLine + ' ' + word).trim().length > maxLen) {
-                lines.push(currentLine.trim());
-                currentLine = word;
-            } else {
-                currentLine = (currentLine + ' ' + word).trim();
-            }
-        });
-        lines.push(currentLine.trim());
-        return lines;
-    };
-
-    const roundTo = (value, decimals = 1) => {
-        const factor = 10 ** decimals;
-        return Math.round(value * factor) / factor;
-    };
-
-    const formatPercent = (value, decimals = 1) => `${roundTo(value, decimals).toFixed(decimals)}%`;
-    const formatSignedPercent = (value, decimals = 1) => `${value >= 0 ? '' : '-'}${roundTo(Math.abs(value), decimals).toFixed(decimals)}%`;
-    const formatRentLift = (value) => `${value >= 0 ? '+' : '-'}$${Math.abs(value).toFixed(2)}/SF`;
-    const formatCapRate = (value) => `${Number(value).toFixed(2)}%`;
-    const formatDollarMillions = (value, decimals = 2) => {
-        const safeValue = Number.isFinite(value) ? value : 0;
-        return `$${roundTo(safeValue, decimals).toFixed(decimals)}M`;
-    };
-    const formatEquityMultiple = (value) => `${roundTo(value, 2).toFixed(2)}x`;
-
-    const baseIrrInput = document.getElementById('baseIrrInput');
-    const rentLiftInput = document.getElementById('rentLiftInput');
-    const exitCapInput = document.getElementById('exitCapInput');
-    const costEscalationInput = document.getElementById('costEscalationInput');
-
-    const irrCtx = document.getElementById('irrSensitivityChart');
-    let irrChart;
-    if (irrCtx) {
-        irrChart = new Chart(irrCtx, {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Resulting IRR (%)',
-                    data: [],
-                    backgroundColor: [
-                        brilliantBlues.lightBlue,
-                        brilliantBlues.mediumBlue,
-                        brilliantBlues.darkBlue,
-                        brilliantBlues.lighterBlue
-                    ],
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                ...globalChartOptions,
-                plugins: { ...globalChartOptions.plugins, legend: { display: false } },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 6,
-                        title: { display: true, text: 'IRR (%)', color: brilliantBlues.fontColor }
-                    }
+            const demographicData = {
+                northern: {
+                    labels: ['5-Yr Pop. Growth %', 'Median Income ($K)', 'Bachelor\'s+ %', 'Median Age'],
+                    data: [5, 80, 40, 39] 
+                },
+                central: {
+                    labels: ['5-Yr Pop. Growth %', 'Median Income ($K)', 'Bachelor\'s+ %', 'Median Age'],
+                    data: [8.5, 75, 30, 38]
+                },
+                southern: {
+                    labels: ['5-Yr Pop. Growth %', 'Median Income ($K)', 'Bachelor\'s+ %', 'Median Age'],
+                    data: [6.5, 70, 35, 37]
                 }
+            };
+
+            let marketChart = null;
+            let demographicChart = null;
+
+            const marketCanvas = document.getElementById('marketChart');
+            const demographicCanvas = document.getElementById('demographicChart');
+            const chartAlert = document.getElementById('chart-alert');
+
+            if (!marketCanvas || !demographicCanvas || typeof Chart === 'undefined') {
+                if (chartAlert) {
+                    chartAlert.classList.remove('hidden');
+                    chartAlert.setAttribute('aria-live', 'polite');
+                }
+                return;
             }
-        });
-    }
 
-    const irrOutputs = {
-        baseIrrOutput: document.getElementById('baseIrrOutput'),
-        rentLiftOutput: document.getElementById('rentLiftOutput'),
-        exitCapOutput: document.getElementById('exitCapOutput'),
-        costEscalationOutput: document.getElementById('costEscalationOutput'),
-        baseIrrDisplay: document.getElementById('baseIrrDisplay'),
-        equityMultipleDisplay: document.getElementById('equityMultipleDisplay'),
-        costEscalationDisplay: document.getElementById('costEscalationDisplay'),
-        stressIrrDisplay: document.getElementById('stressIrrDisplay'),
-        rentLiftDisplay: document.getElementById('rentLiftDisplay'),
-        capRateDisplay: document.getElementById('capRateDisplay'),
-        baseIrrResult: document.getElementById('baseIrrResult'),
-        upsideIrrResult: document.getElementById('upsideIrrResult'),
-        stressIrrResultCard: document.getElementById('stressIrrResultCard'),
-        equityMultipleResult: document.getElementById('equityMultipleResult')
-    };
+            const marketCtx = marketCanvas.getContext('2d');
+            const demographicCtx = demographicCanvas.getContext('2d');
 
-    const updateIrrOutputs = () => {
-        if (!irrChart || !baseIrrInput || !rentLiftInput || !exitCapInput || !costEscalationInput) {
-            return;
-        }
+            function formatCurrency(value) {
+                return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
 
-        const baseIrr = Number(baseIrrInput.value);
-        const rentLift = Number(rentLiftInput.value);
-        const rentSensitivity = Number(rentLiftInput.dataset.sensitivity || 1.8);
-        const exitCap = Number(exitCapInput.value);
-        const capBase = Number(exitCapInput.dataset.baseCap || 5.75);
-        const capSensitivity = Number(exitCapInput.dataset.sensitivity || 4.2);
-        const costEscalation = Number(costEscalationInput.value);
-        const costSensitivity = Number(costEscalationInput.dataset.sensitivity || 0.12);
-
-        const rentIrr = baseIrr + rentLift * rentSensitivity;
-        const capIrr = baseIrr + (capBase - exitCap) * capSensitivity;
-        const stressIrr = baseIrr - costEscalation * costSensitivity;
-        const upsideIrr = Math.max(rentIrr, capIrr);
-        const equityMultiple = 1 + baseIrr / 12;
-
-        irrChart.data.datasets[0].data = [
-            roundTo(baseIrr, 2),
-            roundTo(rentIrr, 2),
-            roundTo(capIrr, 2),
-            roundTo(stressIrr, 2)
-        ];
-        irrChart.data.labels = [
-            'Base Case',
-            formatLabel(`Rent Lift Impact (${formatRentLift(rentLift)})`),
-            formatLabel(`Exit Cap @ ${formatCapRate(exitCap)}`),
-            formatLabel(`${costEscalation >= 0 ? formatPercent(costEscalation, 1) + ' Cost Overrun' : formatSignedPercent(costEscalation, 1) + ' Cost Savings'}`)
-        ];
-        irrChart.update();
-
-        if (irrOutputs.baseIrrOutput) irrOutputs.baseIrrOutput.textContent = formatPercent(baseIrr, 1);
-        if (irrOutputs.rentLiftOutput) irrOutputs.rentLiftOutput.textContent = formatRentLift(rentLift).replace('/SF', '');
-        if (irrOutputs.exitCapOutput) irrOutputs.exitCapOutput.textContent = formatCapRate(exitCap);
-        if (irrOutputs.costEscalationOutput) irrOutputs.costEscalationOutput.textContent = formatSignedPercent(costEscalation, 1);
-
-        if (irrOutputs.baseIrrDisplay) irrOutputs.baseIrrDisplay.textContent = formatPercent(baseIrr, 1);
-        if (irrOutputs.equityMultipleDisplay) irrOutputs.equityMultipleDisplay.textContent = formatEquityMultiple(equityMultiple);
-        if (irrOutputs.costEscalationDisplay) irrOutputs.costEscalationDisplay.textContent = formatSignedPercent(costEscalation, 1);
-        if (irrOutputs.stressIrrDisplay) irrOutputs.stressIrrDisplay.textContent = formatPercent(stressIrr, 1);
-        if (irrOutputs.rentLiftDisplay) irrOutputs.rentLiftDisplay.textContent = formatRentLift(rentLift);
-        if (irrOutputs.capRateDisplay) irrOutputs.capRateDisplay.textContent = formatCapRate(exitCap);
-        if (irrOutputs.baseIrrResult) irrOutputs.baseIrrResult.textContent = formatPercent(baseIrr, 1);
-        if (irrOutputs.upsideIrrResult) irrOutputs.upsideIrrResult.textContent = formatPercent(upsideIrr, 1);
-        if (irrOutputs.stressIrrResultCard) irrOutputs.stressIrrResultCard.textContent = formatPercent(stressIrr, 1);
-        if (irrOutputs.equityMultipleResult) irrOutputs.equityMultipleResult.textContent = formatEquityMultiple(equityMultiple);
-    };
-
-    [baseIrrInput, rentLiftInput, exitCapInput, costEscalationInput].forEach((input) => {
-        if (input) {
-            input.addEventListener('input', updateIrrOutputs);
-        }
-    });
-
-    const costBreakdownCtx = document.getElementById('costBreakdownChart');
-    let costBreakdownChart;
-    if (costBreakdownCtx) {
-        costBreakdownChart = new Chart(costBreakdownCtx, {
-            type: 'pie',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Project Costs',
-                    data: [],
-                    backgroundColor: [
-                        brilliantBlues.darkBlue,
-                        brilliantBlues.mediumBlue,
-                        brilliantBlues.lightBlue,
-                        brilliantBlues.lighterBlue
-                    ],
-                    borderColor: '#ffffff',
-                    borderWidth: 2
-                }]
-            },
-            options: { ...globalChartOptions, scales: { x: { display: false }, y: { display: false } } }
-        });
-    }
-
-    const costNumberInputs = Array.from(document.querySelectorAll('input[data-cost-input]'));
-    const costRangeInputs = Array.from(document.querySelectorAll('input[type="range"][data-target]'));
-    const totalBudgetDisplay = document.getElementById('totalProjectBudget');
-    const dominantCategoryDisplay = document.getElementById('dominantCostCategory');
-    const dominantCostShareDisplay = document.getElementById('dominantCostShare');
-
-    const updateCostBreakdown = () => {
-        if (!costBreakdownChart || costNumberInputs.length === 0) {
-            return;
-        }
-
-        const values = costNumberInputs.map((input) => Number(input.value));
-        const labels = costNumberInputs.map((input) => input.dataset.label || '');
-        const formattedLabels = labels.map((label, idx) => `${label} (${formatDollarMillions(values[idx])})`);
-
-        costBreakdownChart.data.labels = formattedLabels;
-        costBreakdownChart.data.datasets[0].data = values.map((value) => roundTo(value, 3));
-        costBreakdownChart.update();
-
-        const total = values.reduce((sum, value) => sum + value, 0);
-        if (totalBudgetDisplay) totalBudgetDisplay.textContent = formatDollarMillions(total);
-
-        costNumberInputs.forEach((input, idx) => {
-            const labelElement = document.querySelector(`[data-label-for="${input.id}"]`);
-            if (labelElement) labelElement.textContent = formatDollarMillions(values[idx]);
-            const shareElement = document.querySelector(`[data-share-for="${input.id}"]`);
-            const share = total > 0 ? (values[idx] / total) * 100 : 0;
-            if (shareElement) shareElement.textContent = `${roundTo(share, 1).toFixed(1)}% of total`;
-        });
-
-        if (dominantCategoryDisplay && dominantCostShareDisplay) {
-            if (total > 0) {
-                let dominantIndex = 0;
-                values.forEach((value, idx) => {
-                    if (value > values[dominantIndex]) {
-                        dominantIndex = idx;
+            function createMarketChart(tierKey) {
+                if (marketChart) {
+                    marketChart.destroy();
+                }
+                const data = marketData[tierKey];
+                marketChart = new Chart(marketCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [
+                            {
+                                label: '1BR Rent',
+                                data: data.rent1BR,
+                                backgroundColor: '#0d9488',
+                                yAxisID: 'y-axis-rent',
+                            },
+                            {
+                                label: '2BR Rent',
+                                data: data.rent2BR,
+                                backgroundColor: '#14b8a6',
+                                yAxisID: 'y-axis-rent',
+                            },
+                            {
+                                label: 'Occupancy %',
+                                data: data.occupancy,
+                                type: 'line',
+                                borderColor: '#f97316',
+                                backgroundColor: '#f97316',
+                                fill: false,
+                                tension: 0.1,
+                                yAxisID: 'y-axis-occ',
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            if (context.dataset.type === 'line') {
+                                                label += context.parsed.y + '%';
+                                            } else {
+                                                label += formatCurrency(context.parsed.y);
+                                            }
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            'y-axis-rent': {
+                                type: 'linear',
+                                position: 'left',
+                                title: {
+                                    display: true,
+                                    text: 'Monthly Rent ($)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return formatCurrency(value);
+                                    }
+                                }
+                            },
+                            'y-axis-occ': {
+                                type: 'linear',
+                                position: 'right',
+                                title: {
+                                    display: true,
+                                    text: 'Occupancy (%)'
+                                },
+                                min: 85,
+                                max: 100,
+                                grid: {
+                                    drawOnChartArea: false,
+                                }
+                            }
+                        }
                     }
                 });
-                const dominantShare = (values[dominantIndex] / total) * 100;
-                dominantCategoryDisplay.textContent = labels[dominantIndex];
-                dominantCostShareDisplay.textContent = `${roundTo(dominantShare, 1).toFixed(1)}%`;
-            } else {
-                dominantCategoryDisplay.textContent = 'N/A';
-                dominantCostShareDisplay.textContent = '0.0%';
             }
-        }
-    };
 
-    costRangeInputs.forEach((range) => {
-        range.addEventListener('input', () => {
-            const targetId = range.dataset.target;
-            if (!targetId) return;
-            const pairedInput = document.getElementById(targetId);
-            if (pairedInput) {
-                pairedInput.value = range.value;
-                updateCostBreakdown();
-            }
-        });
-    });
-
-    costNumberInputs.forEach((input) => {
-        input.addEventListener('input', () => {
-            const targetId = input.dataset.target;
-            if (targetId) {
-                const pairedRange = document.getElementById(targetId);
-                if (pairedRange) {
-                    pairedRange.value = input.value;
+            function createDemographicChart(tierKey) {
+                if (demographicChart) {
+                    demographicChart.destroy();
                 }
+                const data = demographicData[tierKey];
+                demographicChart = new Chart(demographicCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Tier Profile',
+                            data: data.data,
+                            backgroundColor: 'rgba(13, 148, 136, 0.2)',
+                            borderColor: 'rgba(13, 148, 136, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(13, 148, 136, 1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                pointLabels: {
+                                    font: {
+                                        size: 13
+                                    }
+                                },
+                                ticks: {
+                                    display: false 
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
             }
-            updateCostBreakdown();
+
+            function updateTierContent(tierKey) {
+                const buttons = document.querySelectorAll('.nav-button');
+                buttons.forEach(button => {
+                    button.classList.remove('active');
+                    if (button.dataset.tier === tierKey) {
+                        button.classList.add('active');
+                    }
+                });
+
+                const tier = tierData[tierKey];
+                document.getElementById('tier-title').innerText = tier.title;
+                document.getElementById('tier-cities').innerText = tier.cities;
+                document.getElementById('tier-strengths').innerText = tier.strengths;
+
+                createMarketChart(tierKey);
+                createDemographicChart(tierKey);
+            }
+
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    updateTierContent(button.dataset.tier);
+                });
+            });
+
+            document.querySelectorAll('.nav-link').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            updateTierContent('northern');
         });
-    });
-
-    updateIrrOutputs();
-    updateCostBreakdown();
-});
-</script>
-
+    </script>
 </body>
 </html>
