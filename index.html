@@ -14,6 +14,9 @@
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         body {
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -288,6 +291,14 @@
                 </ul>
             </div>
         </section>
+
+        <section id="structure-selector" class="mb-16">
+            <h2 class="text-3xl font-bold text-teal-700 mb-6 text-center">Investment Structure Selector</h2>
+            <p class="text-lg text-gray-700 mb-12 max-w-3xl mx-auto text-center">
+                Compare capital structures and filter by control, scalability, timeline, cost of capital, and complexity to find the right fit for your project pipeline.
+            </p>
+            <div id="investment-structure-selector" class="max-w-6xl mx-auto"></div>
+        </section>
     </main>
 
     <footer class="bg-gray-800 text-white py-10 mt-12">
@@ -531,6 +542,314 @@
 
             updateTierContent('northern');
         });
+    </script>
+    <script type="text/babel">
+        const { useState, useMemo } = React;
+
+        const structuresData = [
+            {
+                id: 1,
+                name: 'Closed-End Fund',
+                control: 'Low-Moderate',
+                scalability: 'Moderate',
+                timeHorizon: '5–7 years',
+                timeCategory: 'Mid-Term',
+                costOfCapital: 'Moderate',
+                complexity: 'High',
+                notes: 'Manageable fund size for $50M platform; good optics, but reporting requirements remain heavy.',
+            },
+            {
+                id: 2,
+                name: 'Joint Venture (JV)',
+                control: 'Shared',
+                scalability: 'Low',
+                timeHorizon: 'Project-based',
+                timeCategory: 'Project',
+                costOfCapital: 'Moderate',
+                complexity: 'Moderate',
+                notes: 'Ideal for one-off projects or smaller partnerships to deploy initial capital.',
+            },
+            {
+                id: 3,
+                name: 'Development Partnership (Programmatic)',
+                control: 'Shared',
+                scalability: 'Moderate',
+                timeHorizon: 'Multi-project / ongoing',
+                timeCategory: 'Project',
+                costOfCapital: 'Moderate',
+                complexity: 'Moderate',
+                notes: 'Repeatable framework with aligned partners; fits a smaller but steady pipeline.',
+            },
+            {
+                id: 4,
+                name: 'Club Deal',
+                control: 'Moderate',
+                scalability: 'Moderate',
+                timeHorizon: '3–5 years typical',
+                timeCategory: 'Mid-Term',
+                costOfCapital: 'Low-Moderate',
+                complexity: 'Moderate',
+                notes: 'Great for early-stage scaling with UHNW or family office investors.',
+            },
+            {
+                id: 5,
+                name: 'Co-GP Structure',
+                control: 'Moderate',
+                scalability: 'Moderate',
+                timeHorizon: '3–7 years',
+                timeCategory: 'Mid-Term',
+                costOfCapital: 'Low',
+                complexity: 'High',
+                notes: 'Enables participation in larger projects without overextending equity; preserves influence.',
+            },
+            {
+                id: 6,
+                name: 'Separate Account',
+                control: 'Low-Moderate',
+                scalability: 'Moderate',
+                timeHorizon: '5–10 years',
+                timeCategory: 'Long-Term',
+                costOfCapital: 'Low',
+                complexity: 'High',
+                notes: 'Attractive to small institutional or family office investors seeking a tailored strategy.',
+            },
+            {
+                id: 7,
+                name: 'Syndication',
+                control: 'High',
+                scalability: 'Low',
+                timeHorizon: '1–3 years typical',
+                timeCategory: 'Short-Term',
+                costOfCapital: 'High',
+                complexity: 'Low',
+                notes: 'Useful for quick closes and smaller raises; not ideal for sustained growth.',
+            },
+            {
+                id: 8,
+                name: 'REIT (Private/Public)',
+                control: 'Low',
+                scalability: 'Moderate',
+                timeHorizon: 'Perpetual / open-ended',
+                timeCategory: 'Perpetual',
+                costOfCapital: 'Low',
+                complexity: 'Very High',
+                notes: 'More suitable after building an income-producing portfolio; premature at $50M scale.',
+            },
+            {
+                id: 9,
+                name: 'Programmatic Capital Relationship',
+                control: 'Shared',
+                scalability: 'Moderate',
+                timeHorizon: 'Multi-year rolling',
+                timeCategory: 'Project',
+                costOfCapital: 'Moderate',
+                complexity: 'Moderate',
+                notes: 'Simplifies recurring capital raises; strong bridge toward fund formation.',
+            },
+            {
+                id: 10,
+                name: 'Preferred Equity / Mezzanine',
+                control: 'None',
+                scalability: 'Moderate',
+                timeHorizon: '2–4 years',
+                timeCategory: 'Short-Term',
+                costOfCapital: 'High',
+                complexity: 'Moderate',
+                notes: 'Tactical use for leverage or bridging capital between deals.',
+            },
+            {
+                id: 11,
+                name: 'Public-Private Partnership (P3)',
+                control: 'Shared',
+                scalability: 'Moderate',
+                timeHorizon: '10–20 years',
+                timeCategory: 'Long-Term',
+                costOfCapital: 'Very Low',
+                complexity: 'Very High',
+                notes: 'Best for long-term or affordable housing projects with local incentives.',
+            },
+            {
+                id: 12,
+                name: 'Evergreen / Open-End Fund',
+                control: 'Low',
+                scalability: 'Moderate',
+                timeHorizon: 'Perpetual',
+                timeCategory: 'Perpetual',
+                costOfCapital: 'Low',
+                complexity: 'Very High',
+                notes: 'Consider only once stable assets and investor base justify ongoing inflows.',
+            },
+            {
+                id: 13,
+                name: 'Crowdfunded / Retail',
+                control: 'High',
+                scalability: 'Low',
+                timeHorizon: '1–3 years',
+                timeCategory: 'Short-Term',
+                costOfCapital: 'High',
+                complexity: 'Moderate',
+                notes: 'Potential tool for marketing exposure or niche project capital fills.',
+            },
+        ];
+
+        const getUniqueOptions = (key) => {
+            const options = [...new Set(structuresData.map(item => item[key]))];
+            return options.sort();
+        };
+
+        const filterOptions = {
+            control: ['any', ...getUniqueOptions('control')],
+            scalability: ['any', ...getUniqueOptions('scalability')],
+            timeHorizon: ['any', 'Project', 'Short-Term', 'Mid-Term', 'Long-Term', 'Perpetual'],
+            costOfCapital: ['any', 'Very Low', 'Low', 'Low-Moderate', 'Moderate', 'High', 'Very High'],
+            complexity: ['any', 'Low', 'Moderate', 'High', 'Very High'],
+        };
+
+        const initialFilters = {
+            control: 'any',
+            scalability: 'any',
+            timeHorizon: 'any',
+            costOfCapital: 'any',
+            complexity: 'any',
+        };
+
+        const FilterInput = ({ name, label, value, onChange, options }) => (
+            <div className="mb-4">
+                <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+                    {label}
+                </label>
+                <select
+                    id={name}
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-white focus:outline-none focus:ring-teal-600 focus:border-teal-600 sm:text-sm rounded-md shadow-sm"
+                >
+                    {options.map(option => (
+                        <option key={option} value={option}>
+                            {option === 'any' ? `Any ${label}` : option}
+                        </option>
+                    ))}
+                </select>
+            </div>
+        );
+
+        const StructureCard = ({ structure }) => (
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100">
+                <div className="p-6 space-y-3">
+                    <h3 className="text-xl font-semibold text-teal-700">{structure.name}</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
+                        <p><strong>Control:</strong> <span className="font-normal">{structure.control}</span></p>
+                        <p><strong>Scalability:</strong> <span className="font-normal">{structure.scalability}</span></p>
+                        <p><strong>Time Horizon:</strong> <span className="font-normal">{structure.timeHorizon}</span></p>
+                        <p><strong>Cost of Capital:</strong> <span className="font-normal">{structure.costOfCapital}</span></p>
+                        <p><strong>Complexity:</strong> <span className="font-normal">{structure.complexity}</span></p>
+                    </div>
+                    <p className="text-sm text-gray-600 pt-2 border-t border-gray-100">
+                        <strong>Notes:</strong> {structure.notes}
+                    </p>
+                </div>
+            </div>
+        );
+
+        const App = () => {
+            const [filters, setFilters] = useState(initialFilters);
+
+            const handleFilterChange = (e) => {
+                const { name, value } = e.target;
+                setFilters(prev => ({ ...prev, [name]: value }));
+            };
+
+            const resetFilters = () => setFilters(initialFilters);
+
+            const filteredStructures = useMemo(() => {
+                return structuresData.filter(structure => (
+                    (filters.control === 'any' || structure.control === filters.control) &&
+                    (filters.scalability === 'any' || structure.scalability === filters.scalability) &&
+                    (filters.timeHorizon === 'any' || structure.timeCategory === filters.timeHorizon) &&
+                    (filters.costOfCapital === 'any' || structure.costOfCapital === filters.costOfCapital) &&
+                    (filters.complexity === 'any' || structure.complexity === filters.complexity)
+                ));
+            }, [filters]);
+
+            return (
+                <div className="bg-stone-50 border border-gray-200 rounded-2xl shadow-xl p-6 md:p-8">
+                    <div className="flex flex-col lg:flex-row gap-8">
+                        <aside className="lg:w-1/3 bg-white border border-gray-100 rounded-xl shadow-md p-6 h-fit">
+                            <h3 className="text-xl font-semibold text-teal-700 mb-4">Filter Criteria</h3>
+                            <form className="space-y-1">
+                                <FilterInput
+                                    name="control"
+                                    label="Control"
+                                    value={filters.control}
+                                    onChange={handleFilterChange}
+                                    options={filterOptions.control}
+                                />
+                                <FilterInput
+                                    name="scalability"
+                                    label="Scalability"
+                                    value={filters.scalability}
+                                    onChange={handleFilterChange}
+                                    options={filterOptions.scalability}
+                                />
+                                <FilterInput
+                                    name="timeHorizon"
+                                    label="Time Horizon"
+                                    value={filters.timeHorizon}
+                                    onChange={handleFilterChange}
+                                    options={filterOptions.timeHorizon}
+                                />
+                                <FilterInput
+                                    name="costOfCapital"
+                                    label="Cost of Capital"
+                                    value={filters.costOfCapital}
+                                    onChange={handleFilterChange}
+                                    options={filterOptions.costOfCapital}
+                                />
+                                <FilterInput
+                                    name="complexity"
+                                    label="Complexity"
+                                    value={filters.complexity}
+                                    onChange={handleFilterChange}
+                                    options={filterOptions.complexity}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={resetFilters}
+                                    className="mt-3 w-full bg-gray-800 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-900 transition"
+                                >
+                                    Reset Filters
+                                </button>
+                            </form>
+                        </aside>
+
+                        <div className="flex-1">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-xl font-semibold text-gray-800">Matching Structures</h3>
+                                <span className="text-sm text-gray-600">{filteredStructures.length} of {structuresData.length}</span>
+                            </div>
+                            {filteredStructures.length > 0 ? (
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                                    {filteredStructures.map(structure => (
+                                        <StructureCard key={structure.id} structure={structure} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex items-center justify-center h-40 bg-white rounded-lg border border-gray-100 shadow-inner text-gray-500">
+                                    No structures match your criteria.
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const rootElement = document.getElementById('investment-structure-selector');
+        if (rootElement) {
+            const root = ReactDOM.createRoot(rootElement);
+            root.render(<App />);
+        }
     </script>
 </body>
 </html>
